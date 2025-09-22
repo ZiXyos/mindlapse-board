@@ -1,0 +1,9 @@
+mindboard.local {
+  tls /usr/local/etc/caddy/certs/mindboard.local+1.pem /usr/local/etc/caddy/certs/mindboard.local+1-key.pem
+  reverse_proxy apps:{$APP_PORT}
+}
+
+api.mindboard.local {
+  tls /usr/local/etc/caddy/certs/mindboard.local+1.pem /usr/local/etc/caddy/certs/mindboard.local+1-key.pem
+  reverse_proxy apps:{$PORT}
+}

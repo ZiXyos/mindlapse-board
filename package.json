@@ -1,10 +1,17 @@
 {
-  "name": "mindlapse-board",
+  "name": "@mindboad",
   "private": true,
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+     "compose": "docker compose -f ./docker/docker-compose.yml",
+    "c:u": "pnpm compose --env-file .env.dev up",
+    "c:u:rebuild": "pnpm compose --env-file .env.dev up --force-recreate --build",
+    "c:d": "pnpm compose --env-file .env.dev down",
+    "c:ex": "pnpm compose exec apps",
+    "c:ex:i": "pnpm exec pnpm install",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types"
   },

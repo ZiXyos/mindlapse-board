@@ -1,0 +1,17 @@
+{
+  "extends": "@adonisjs/tsconfig/tsconfig.app.json",
+  "include": [
+    "**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ],
+  "compilerOptions": {
+   "rootDir": "./",
+    "outDir": "./build",
+    "moduleResolution": "nodenext",
+    "paths": {
+      "#database/*": ["./database/*"]
+    }}
+}
