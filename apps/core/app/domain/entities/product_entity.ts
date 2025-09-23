@@ -2,9 +2,17 @@ import logger from '@adonisjs/core/services/logger'
 
 export default class ProductEntity {
   private constructor(
-    private readonly id: string,
-    private name: string
+    private readonly _id: string,
+    private _name: string
   ) {}
+
+  get id() {
+    return this._id
+  }
+
+  get name() {
+    return this._name
+  }
 
   static create(): ProductEntity {
     return new ProductEntity('id-001', 'simple-product')
@@ -12,6 +20,6 @@ export default class ProductEntity {
 
   update(product: ProductEntity) {
     logger.info(`Update product with id ${product.id}`)
-    this.name = product.name
+    this._name = product.name
   }
 }

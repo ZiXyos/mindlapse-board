@@ -1,15 +1,16 @@
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 import CreateProductService from '#application/create_product_service'
+import logger from '@adonisjs/core/services/logger'
 
 @inject()
 export default class ProductsAdapters {
   constructor(protected createProduct: CreateProductService) {}
 
   async handleCreate(ctx: HttpContext) {
-    let createProductDTO = ctx.request.body
-    await this.createProduct.execute(createProductDTO)
+    let { request, response } = ctx
+    let res = await this.createProduct.execute(request.body)
 
-    ctx.response.send(createProductDTO)
+    response.send({ data: res })
   }
 }

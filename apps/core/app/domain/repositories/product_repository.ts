@@ -1,5 +1,7 @@
 import ProductEntity from '#entities/product_entity'
+import { inject } from '@adonisjs/core'
 
-export interface ProductRepository {
-  create(product: ProductEntity): Promise<ProductEntity>
+@inject()
+export abstract class ProductRepository {
+  abstract create(product: ProductEntity): Promise<Record<string, string>>
 }

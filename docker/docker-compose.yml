@@ -5,6 +5,8 @@ services:
     restart: always
     env_file:
       - ../.env.dev
+    environment:
+      - CI=true
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
@@ -16,7 +18,7 @@ services:
       - /usr/src/app/apps/core/node_modules
       - /usr/src/app/apps/core/.turbo
       - ../:/usr/src/app
-    command: /bin/bash -c 'pnpm i && pnpm dev'
+    command: /bin/bash -c 'pnpm install --prefer-offline --ignore-scripts && pnpm dev'
 
   database:
     container_name: mindboard-db

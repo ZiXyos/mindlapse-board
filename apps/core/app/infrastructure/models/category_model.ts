@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, manyToMany } from '@adonisjs/lucid/orm'
 import type { ManyToMany } from '@adonisjs/lucid/types/relations'
-import Product from './product.js'
+import Product from '#models/product_model'
 
 export default class Category extends BaseModel {
   @column({ isPrimary: true })

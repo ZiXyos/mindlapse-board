@@ -1,8 +1,8 @@
-import {inject} from '@adonisjs/core'
+import { inject } from '@adonisjs/core'
 
 import CreateProduct from '#services/create_product'
 import { CreateProductCommand } from '#commands/product_commands'
-import type { ProductRepository } from '#repositories/product_repository'
+import { ProductRepository } from '#repositories/product_repository'
 
 @inject()
 export default class CreateProductService {
@@ -11,7 +11,7 @@ export default class CreateProductService {
     protected productRepository: ProductRepository
   ) {}
 
-  async execute(_product: any /* dto */): Promise<{}> {
+  async execute(_product: any /* dto */): Promise<Record<string, string>> {
     let command = new CreateProductCommand()
     let product = this.createProduct.execute(command)
 

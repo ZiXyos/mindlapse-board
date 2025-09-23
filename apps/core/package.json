@@ -20,7 +20,7 @@
     "#adapters/*": "./app/infrastructure/adapters/*.js",
     "#exceptions/*": "./app/domain/exceptions/*.js",
     "#commands/*": "./app/domain/commands/*.js",
-    "#models/*": "./app/domain/infrastructure/models/*.js",
+    "#models/*": "./app/infrastructure/models/*.js",
     "#mails/*": "./app/mails/*.js",
     "#services/*": "./app/domain/services/*.js",
     "#application/*": "./app/services/*.js",

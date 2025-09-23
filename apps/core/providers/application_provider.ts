@@ -1,5 +1,7 @@
 import type { ApplicationService } from '@adonisjs/core/types'
 import { LucidProductRepository } from '#lucidRepositories/lucid_product_repository'
+import '#config/container'
+import { ProductRepository } from '#repositories/product_repository'
 
 export default class ApplicationProvider {
   constructor(protected app: ApplicationService) {}
@@ -8,8 +10,8 @@ export default class ApplicationProvider {
    * Register bindings to the container
    */
   register() {
-    this.app.container.bind('ProductRepository', () => {
-      return new LucidProductRepository()
+    this.app.container.singleton(ProductRepository, () => {
+      return this.app.container.make(LucidProductRepository)
     })
   }
 

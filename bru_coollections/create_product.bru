@@ -5,7 +5,13 @@ meta {
 }
 
 post {
-  url: https://api.mindboard.local/v1/products
-  body: none
+  url: apps.mindboard.orb.local/v1/products
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "name": "ok"
+  }
 }
