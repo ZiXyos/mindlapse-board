@@ -17,8 +17,10 @@ services:
       - /usr/src/app/apps/web/.turbo
       - /usr/src/app/apps/core/node_modules
       - /usr/src/app/apps/core/.turbo
+      - /usr/src/app/packages/shared/node_modules
+      - /usr/src/app/packages/shared/dist
       - ../:/usr/src/app
-    command: /bin/bash -c 'pnpm install --prefer-offline --ignore-scripts && pnpm dev'
+    command: /bin/bash -c 'pnpm install --prefer-offline --ignore-scripts && pnpm --filter=@mindboard/shared build && pnpm dev'
 
   database:
     container_name: mindboard-db

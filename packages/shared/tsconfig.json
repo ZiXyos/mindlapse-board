@@ -2,15 +2,18 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "../../tsconfig.root.json",
   "compilerOptions": {
-    "baseUrl": "./src/",
+    "baseUrl": "./",
     "declaration": true,
     "resolveJsonModule": true,
     "outDir": "./dist",
-    "target": "ES6",
+    "target": "ES2020",
+    "module": "ESNext",
+    "composite": true,
+    "moduleResolution": "bundler",
     "paths": {
-      "@shared/*": ["./*"]
+      "@shared/*": ["./src/*"]
     }
   },
-  "include": ["**/*"],
-  "exclude": ["../../node_modules/", "dist/"]
+  "include": ["src/**/*", "index.ts"],
+  "exclude": ["../../node_modules/", "dist/", "node_modules"]
 }

@@ -46,3 +46,4 @@ next-env.d.ts
 postgres_data
 caddy_data
 caddy_config
+.pnpm-store/v10

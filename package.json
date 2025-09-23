@@ -5,6 +5,7 @@
     "preinstall": "npx only-allow pnpm",
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "dev:shared": "./scripts/dev-with-shared.sh",
     "lint": "turbo run lint",
     "compose": "docker compose -f ./docker/docker-compose.yml",
     "c:u": "pnpm compose --env-file .env.dev up",
