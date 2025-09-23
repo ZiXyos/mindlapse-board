@@ -6,7 +6,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-     "compose": "docker compose -f ./docker/docker-compose.yml",
+    "compose": "docker compose -f ./docker/docker-compose.yml",
     "c:u": "pnpm compose --env-file .env.dev up",
     "c:u:rebuild": "pnpm compose --env-file .env.dev up --force-recreate --build",
     "c:d": "pnpm compose --env-file .env.dev down",
@@ -20,7 +20,7 @@
     "turbo": "^2.5.6",
     "typescript": "5.9.2"
   },
-  "packageManager": "pnpm@9.0.0",
+  "packageManager": "pnpm@10.17.1",
   "engines": {
     "node": ">=18"
   }

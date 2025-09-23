@@ -197,6 +197,8 @@ importers:
         specifier: ^8.40.0
         version: 8.40.0(eslint@9.34.0)(typescript@5.9.2)
 
+  packages/shared: {}
+
   packages/typescript-config: {}
 
   packages/ui:

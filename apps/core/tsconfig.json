@@ -12,6 +12,29 @@
     "outDir": "./build",
     "moduleResolution": "nodenext",
     "paths": {
-      "#database/*": ["./database/*"]
-    }}
+      "#controllers/*": ["./app/infrastructure/controllers/*"],
+      "#adapters/*": ["./app/infrastructure/adapters/*"],
+      "#exceptions/*": ["./app/domain/exceptions/*"],
+      "#commands/*": ["./app/domain/commands/*"],
+      "#models/*": ["./app/domain/infrastructure/models/*"],
+      "#mails/*": ["./app/mails/*"],
+      "#services/*": ["./app/domain/services/*"],
+      "#application/*": ["./app/services/*"],
+      "#repositories/*": ["./app/domain/repositories/*"],
+      "#entities/*": ["./app/domain/entities/*"],
+      "#lucidRepositories/*": ["./app/infrastructure/repositories/*"],
+      "#listeners/*": ["./app/listeners/*"],
+      "#events/*": ["./app/events/*"],
+      "#middleware/*": ["./app/infrastructure/middleware/*"],
+      "#validators/*": ["./app/validators/*"],
+      "#providers/*": ["./providers/*"],
+      "#policies/*": ["./app/policies/*"],
+      "#abilities/*": ["./app/abilities/*"],
+      "#database/*": ["./database/*"],
+      "#start/*": ["./start/*"],
+      "#tests/*": ["./tests/*"],
+      "#config/*": ["./config/*"]
+    },
+    "typeRoots": [
+      "./app/domain/types", "./node_modules/@types"]}
 }

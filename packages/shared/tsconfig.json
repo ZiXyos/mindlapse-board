@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "../../tsconfig.root.json",
+  "compilerOptions": {
+    "baseUrl": "./src/",
+    "declaration": true,
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "target": "ES6",
+    "paths": {
+      "@shared/*": ["./*"]
+    }
+  },
+  "include": ["**/*"],
+  "exclude": ["../../node_modules/", "dist/"]
+}
