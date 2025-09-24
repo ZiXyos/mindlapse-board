@@ -1,31 +1,34 @@
-import type { BaseEntity, Currency } from './common'
+import type { BaseEntity } from './common'
+import type { Currency } from './currency'
+import { Identifer } from './identifier'
+import { Price } from './price'
 
 export type VariantOptions = Record<string, string>
 export type PricesJson = Record<Currency, number>
 
-export interface ProductVariant extends BaseEntity {
-  productId: string
+export type ProductVariant = {
+  productId: Identifer
   sku: string
   name: string
   options: VariantOptions
   position: number
-  price: number
+  price: Price
   stockQuantity: number
   currency: Currency
   pricesJson: PricesJson
   isDefault: boolean
-}
+} & BaseEntity
 
-export interface ProductVariantWithProduct extends ProductVariant {
+export type ProductVariantWithProduct = {
   product: {
-    id: string
+    id: Identifer
     name: string
     slug: string
   }
-}
+} & ProductVariant
 
-export interface CreateVariantPayload {
-  productId: string
+export type CreateVariantPayload = {
+  productId: Identifer
   sku: string
   name: string
   options: VariantOptions
@@ -37,7 +40,7 @@ export interface CreateVariantPayload {
   isDefault?: boolean
 }
 
-export interface UpdateVariantPayload {
+export type UpdateVariantPayload = {
   sku?: string
   name?: string
   options?: VariantOptions
@@ -49,8 +52,8 @@ export interface UpdateVariantPayload {
   isDefault?: boolean
 }
 
-export interface VariantFilters {
-  productId?: string
+export type VariantFilters = {
+  productId?: Identifer
   sku?: string
   minPrice?: number
   maxPrice?: number
@@ -58,8 +61,8 @@ export interface VariantFilters {
   currency?: Currency
 }
 
-export interface StockAdjustment {
-  variantId: string
+export type StockAdjustment = {
+  variantId: Identifer
   quantity: number
   operation: 'increase' | 'decrease' | 'set'
 }

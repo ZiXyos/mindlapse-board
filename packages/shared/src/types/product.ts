@@ -1,20 +1,21 @@
-import type { BaseEntity, Currency } from './common'
+import type { BaseEntity } from './common'
 import type { Category } from './category'
+import type { Currency } from "./currency";
 import type { ProductVariant } from './variant'
 
-export interface Product extends BaseEntity {
+export type Product = {
   name: string
   slug: string
   description: string | null
   isActive: boolean
-}
+} & BaseEntity
 
-export interface ProductWithRelations extends Product {
+export type ProductWithRelations = {
   variants: ProductVariant[]
   categories: Category[]
-}
+} & Product
 
-export interface ProductWithVariantsAndCategories extends Product {
+export type ProductWithVariantsAndCategories = {
   variants: ProductVariant[]
   categories: Array<{
     id: string
@@ -27,9 +28,9 @@ export interface ProductWithVariantsAndCategories extends Product {
     currency: Currency
   }
   totalStock?: number
-}
+} & Product
 
-export interface CreateProductPayload {
+export type CreateProductPayload = {
   name: string
   slug: string
   description?: string | null
@@ -37,7 +38,7 @@ export interface CreateProductPayload {
   categoryIds?: string[]
 }
 
-export interface UpdateProductPayload {
+export type UpdateProductPayload = {
   name?: string
   slug?: string
   description?: string | null
@@ -45,7 +46,7 @@ export interface UpdateProductPayload {
   categoryIds?: string[]
 }
 
-export interface ProductFilters {
+export type ProductFilters = {
   name?: string
   slug?: string
   isActive?: boolean
@@ -56,12 +57,12 @@ export interface ProductFilters {
   currency?: Currency
 }
 
-export interface ProductSortOptions {
+export type ProductSortOptions = {
   field: 'name' | 'createdAt' | 'updatedAt' | 'price'
   direction: 'asc' | 'desc'
 }
 
-export interface ProductListItem {
+export type ProductListItem = {
   id: string
   name: string
   slug: string

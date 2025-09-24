@@ -22,6 +22,8 @@ const productRoutes = () => {
     .group(() => {
       router.get('/', [ProductControllers, 'getProducts'])
       router.post('/', [ProductControllers, 'createProduct'])
+
+      router.get('/:id', [ProductControllers, 'getProductById'])
     })
     .prefix('/products')
 }

@@ -7,14 +7,19 @@ import { HttpContext } from '@adonisjs/core/http'
 export default class ProductControllers {
   constructor(protected productAdapter: ProductsAdapters) {}
 
-  public getProducts(ctx: HttpContext) {
-    ctx.response.send({ message: 'Getting product from products' })
+  public async getProducts(ctx: HttpContext) {
+    const res = await this.productAdapter.handleGet(ctx)
+    ctx.response.send({ data: res.data })
+  }
+
+  public async getProductByID(ctx: HttpContext) {
+    ctx.response.send({ data: [] })
   }
 
   public async createProduct(ctx: HttpContext) {
     const res = await this.productAdapter.handleCreate(ctx)
 
-    if (res.success) ctx.response.status(HTTPStatusCreated).send(res.data)
+    if (res.success) ctx.response.status(HTTPStatusCreated).send({ data: res.data })
     else ctx.response.status(HTTPStatusServerError).send(res.message)
   }
 }

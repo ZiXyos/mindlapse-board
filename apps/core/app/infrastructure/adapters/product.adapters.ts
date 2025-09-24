@@ -1,6 +1,5 @@
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
-import CreateProductWithVariantsService from '#application/create.product.with.variants.service'
 import logger from '@adonisjs/core/services/logger'
 
 import {
@@ -13,6 +12,8 @@ import {
   HTTPStatusServerError,
   HTTPStatusUnprocessableEntity,
 } from '@mindboard/shared'
+
+import CreateProductWithVariantsService from '#application/create.product.with.variants.service'
 
 @inject()
 export default class ProductsAdapters {
@@ -54,6 +55,15 @@ export default class ProductsAdapters {
         code: HTTPStatusServerError,
         message: 'Internal server error',
       }
+    }
+  }
+
+  async handleGet(ctx: HttpContext): Promise<ApiResponse> {
+    const { request } = ctx
+
+    return {
+      success: true,
+      data: { products: [] },
     }
   }
 }
