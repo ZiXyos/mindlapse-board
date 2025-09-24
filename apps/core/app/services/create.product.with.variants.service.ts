@@ -33,13 +33,14 @@ export default class CreateProductWithVariantsService {
           ? productData.variants
           : [this.createDefaultVariant(productData)]
 
-        const variantPriceJson = await this.currencyConverterService.handle(
-          'EUR',
-          variantsToCreate.map((v: CreateVariantDTO) => v.price)
-        )
-
         const createdVariants = await Promise.all(
-          variantsToCreate.map((variant) => {
+          variantsToCreate.map(async (variant) => {
+            const convertedPrices = await this.currencyConverterService.handle(
+              variant.currency,
+              variant.price,
+              variant.pricesJson || {}
+            )
+
             const command = new CreateVariantCommand(
               variant.name,
               variant.sku,
@@ -47,7 +48,7 @@ export default class CreateProductWithVariantsService {
               variant.price,
               variant.stockQuantity,
               variant.currency,
-              variantPriceJson,
+              convertedPrices,
               variant.isDefault
             )
             return this.createVariantService.execute(command, createdProduct.id)
