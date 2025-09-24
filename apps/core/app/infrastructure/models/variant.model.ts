@@ -13,7 +13,7 @@ export default class ProductVariantModel extends BaseModel {
   @column({ isPrimary: true })
   declare id: string
 
-  @column()
+  @column({ columnName: 'product_id' })
   declare productId: string
 
   @column()
@@ -55,7 +55,9 @@ export default class ProductVariantModel extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 
-  @belongsTo(() => ProductModel)
+  @belongsTo(() => ProductModel, {
+    foreignKey: 'productId',
+  })
   declare product: BelongsTo<typeof ProductModel>
 
   public getPrice(currency: Currency = 'EUR'): number {

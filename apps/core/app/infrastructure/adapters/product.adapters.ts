@@ -7,17 +7,20 @@ import {
   validateData,
   type CreateProductWithVariantsDTO,
   type ApiResponse,
-  type Product,
   HTTPStatusCreated,
   HTTPStatusServerError,
   HTTPStatusUnprocessableEntity,
 } from '@mindboard/shared'
 
 import CreateProductWithVariantsService from '#application/create.product.with.variants.service'
+import ProductService from '#application/product.service'
 
 @inject()
 export default class ProductsAdapters {
-  constructor(protected createProductWithVariants: CreateProductWithVariantsService) {}
+  constructor(
+    protected createProductWithVariants: CreateProductWithVariantsService,
+    protected productService: ProductService
+  ) {}
 
   async handleCreate(ctx: HttpContext): Promise<ApiResponse> {
     const { request } = ctx
@@ -47,8 +50,8 @@ export default class ProductsAdapters {
         message: 'Product created successfully',
       }
     } catch (error) {
+      logger.error('error creating product', error)
       logger.error(error)
-      logger.error('Error creating product:', error)
 
       return {
         success: false,
@@ -59,11 +62,41 @@ export default class ProductsAdapters {
   }
 
   async handleGet(ctx: HttpContext): Promise<ApiResponse> {
-    const { request } = ctx
+    try {
+      const res = await this.productService.getProducts()
+      return {
+        success: true,
+        code: 200,
+        data: { products: res },
+      }
+    } catch (err) {
+      logger.error('error fetching all product', err)
+      logger.error(err)
+      return {
+        success: false,
+        code: HTTPStatusServerError,
+        message: 'Internal server error',
+      }
+    }
+  }
 
-    return {
-      success: true,
-      data: { products: [] },
+  async handleGetByID(id: string): Promise<ApiResponse> {
+    try {
+      const res = await this.productService.getProductById(id)
+      return {
+        success: true,
+        code: 200,
+        data: res,
+      }
+    } catch (err) {
+      logger.error(`error fetching product id: ${id}`, err)
+      logger.error(err)
+
+      return {
+        success: false,
+        code: HTTPStatusServerError,
+        message: 'Internal server error',
+      }
     }
   }
 }

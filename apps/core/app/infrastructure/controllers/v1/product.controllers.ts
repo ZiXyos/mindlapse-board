@@ -13,7 +13,11 @@ export default class ProductControllers {
   }
 
   public async getProductByID(ctx: HttpContext) {
-    ctx.response.send({ data: [] })
+    const { id } = ctx.params
+    if (typeof id !== 'string') return
+
+    const res = await this.productAdapter.handleGetByID(id)
+    ctx.response.send({ data: res })
   }
 
   public async createProduct(ctx: HttpContext) {

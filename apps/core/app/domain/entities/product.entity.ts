@@ -7,6 +7,7 @@ export default class ProductEntity {
     private _name: string,
     private _slug: string,
     private _description: string
+    // TODO: Add creation date + update date
   ) {}
 
   get id() {
