@@ -11,7 +11,49 @@ post {
 }
 
 body:json {
-  {
-    "name": "ok"
-  }
+  
+    {
+      "name": "Gaming Laptop",
+      "slug": "gaming-laptop",
+      "description": "High-performance gaming laptop",
+      "isActive": true,
+      "categoryIds": ["550e8400-e29b-41d4-a716-446655440000"],
+      "variants": [
+        {
+          "sku": "LAPTOP-16GB-512GB",
+          "name": "16GB RAM, 512GB SSD",
+          "options": {
+            "RAM": "16GB",
+            "Storage": "512GB SSD"
+          },
+          "position": 1,
+          "price": 129999,
+          "stockQuantity": 10,
+          "currency": "EUR",
+          "pricesJson": {
+            "EUR": 129999,
+            "USD": 139999
+          },
+          "isDefault": true
+        },
+        {
+          "sku": "LAPTOP-32GB-1TB",
+          "name": "32GB RAM, 1TB SSD",
+          "options": {
+            "RAM": "32GB",
+            "Storage": "1TB SSD"
+          },
+          "position": 2,
+          "price": 179999,
+          "stockQuantity": 5,
+          "currency": "EUR",
+          "pricesJson": {
+            "EUR": 179999,
+            "USD": 199999
+          },
+          "isDefault": false
+        }
+      ]
+    }
+  
 }

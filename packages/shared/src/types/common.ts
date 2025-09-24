@@ -1,5 +1,3 @@
-export type Currency = 'EUR' | 'USD' | 'KRW' | 'JPY'
-
 export type UserRole = 'ADMIN' | 'USER'
 
 export interface BaseEntity {
@@ -29,6 +27,7 @@ export interface PaginatedResponse<T> {
 
 export interface ApiResponse<T = any> {
   success: boolean
+  code: number
   data?: T
   message?: string
   errors?: Record<string, string[]>

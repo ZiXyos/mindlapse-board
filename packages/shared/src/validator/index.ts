@@ -27,4 +27,5 @@ export const validateData = async <T>(
   }
 };
 
-export * from './product'
+export * from './product.validator'
+export * from './variant.validator'

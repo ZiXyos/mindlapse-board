@@ -1,1 +1,2 @@
-export * from './product_dto'
+export * from './product.dto'
+export * from './variant.dto'

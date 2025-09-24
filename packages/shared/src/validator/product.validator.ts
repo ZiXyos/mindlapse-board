@@ -31,5 +31,4 @@ export const updateProductSchema = vine.compile(
   })
 );
 
-// For backward compatibility
 export const productSchema = createProductSchema;
