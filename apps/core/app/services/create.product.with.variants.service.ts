@@ -7,12 +7,14 @@ import CreateVariantService from '#application/create.variant.service'
 import { CreateVariantCommand } from '#commands/variant.commands'
 
 import { CreateProductWithVariantsDTO, CreateVariantDTO, Product } from '@mindboard/shared'
+import CurrencyConverterService from './currency.converter.service.js'
 
 @inject()
 export default class CreateProductWithVariantsService {
   constructor(
     protected createProductService: CreateProductService,
-    protected createVariantService: CreateVariantService
+    protected createVariantService: CreateVariantService,
+    protected currencyConverterService: CurrencyConverterService
   ) {}
 
   async execute(productData: CreateProductWithVariantsDTO): Promise<Product> {
@@ -27,12 +29,18 @@ export default class CreateProductWithVariantsService {
           categoryIds: productData.categoryIds,
         })
 
-        const variantsToCreate = productData.variants?.length
+        const variantsToCreate: Array<CreateVariantDTO> = productData.variants?.length
           ? productData.variants
           : [this.createDefaultVariant(productData)]
 
         const createdVariants = await Promise.all(
-          variantsToCreate.map((variant) => {
+          variantsToCreate.map(async (variant) => {
+            const convertedPrices = await this.currencyConverterService.handle(
+              variant.currency,
+              variant.price,
+              variant.pricesJson || {}
+            )
+
             const command = new CreateVariantCommand(
               variant.name,
               variant.sku,
@@ -40,7 +48,7 @@ export default class CreateProductWithVariantsService {
               variant.price,
               variant.stockQuantity,
               variant.currency,
-              variant.pricesJson,
+              convertedPrices,
               variant.isDefault
             )
             return this.createVariantService.execute(command, createdProduct.id)

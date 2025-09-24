@@ -1,9 +1,9 @@
 import { inject } from '@adonisjs/core'
+import logger from '@adonisjs/core/services/logger'
 
 import CreateVariant from '#services/create.variant'
 import { CreateVariantCommand } from '#commands/variant.commands'
 import { VariantRepository } from '#repositories/variant.repository'
-import logger from '@adonisjs/core/services/logger'
 
 import { ProductVariant } from '@mindboard/shared'
 
@@ -11,7 +11,7 @@ import { ProductVariant } from '@mindboard/shared'
 export default class CreateVariantService {
   constructor(
     protected createVariant: CreateVariant,
-    protected variantRepository: VariantRepository
+    protected variantRepository: VariantRepository,
   ) {}
 
   async execute(command: CreateVariantCommand, productId: string): Promise<ProductVariant> {
