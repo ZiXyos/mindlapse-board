@@ -1,12 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { useState } from "react";
-
 import { create } from "zustand";
 
 import reactLogo from "../assets/react.svg";
 import viteLogo from "/vite.svg";
-import "./../App.css";
 
 interface CounterState {
   count: number
