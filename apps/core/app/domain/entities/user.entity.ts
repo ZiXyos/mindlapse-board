@@ -4,11 +4,11 @@ import { AuthentificationCommand } from '#commands/authentification.command'
 
 export default class UserEntity {
   constructor(
-    protected id: number,
+    protected id: string,
     protected email: string
   ) {}
 
-  static create(params: { id: number; email: EmailType }): UserEntity {
+  static create(params: { id: string; email: EmailType }): UserEntity {
     return new UserEntity(params.id, params.email)
   }
 
@@ -16,11 +16,12 @@ export default class UserEntity {
     return new UserEntity(userModel.id, userModel.email)
   }
 
-  public toModel(): Partial<UserModel> {
-    return {
-      id: this.id,
-      email: this.email,
-    } as UserModel
+  public toModel(): UserModel {
+    let model = new UserModel()
+    model.id = this.id
+    model.email = this.email
+
+    return model
   }
 
   public async validate({ params }: AuthentificationCommand): Promise<UserEntity | null> {
