@@ -49,7 +49,7 @@ export default class DeleteProductService {
           this.createUpdateProductCommand(command),
           productEntity
         )
-        updatedProduct.merge(updatedProductEntity)
+        updatedProduct.merge(updatedProductEntity.toModel())
         await updatedProduct.save()
         logger.info(`product ${updatedProduct.id} deleted`)
 
@@ -72,8 +72,8 @@ export default class DeleteProductService {
           undefined,
           undefined,
           undefined,
-          undefined,
           0,
+          undefined,
           undefined,
           undefined,
           undefined
