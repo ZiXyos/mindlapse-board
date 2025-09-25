@@ -29,3 +29,4 @@ export const validateData = async <T>(
 
 export * from './product.validator'
 export * from './variant.validator'
+export * from './credential.validator'
