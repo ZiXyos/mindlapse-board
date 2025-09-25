@@ -27,11 +27,10 @@ const productRoutes = () => {
 
       router.get('/:id', [ProductControllers, 'getProductByID'])
       router.delete('/:id', [ProductControllers])
-      router.put('/:id', ProductControllers)
-      router.patch('/:id', [ProductControllers])
+      router.put('/:id', [ProductControllers, 'replaceProduct'])
+      router.patch('/:id', [ProductControllers, 'updateProduct'])
     })
     .prefix('/products')
-
 }
 
 router
