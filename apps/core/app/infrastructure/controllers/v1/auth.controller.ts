@@ -18,6 +18,7 @@ export default class AuthController {
   }
 
   async logout(ctx: HttpContext) {
-    ctx.response.status(200).send({})
+    const res = await this.authAdapter.handleLogout(ctx)
+    ctx.response.status(res.code).send(res.code)
   }
 }

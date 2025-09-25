@@ -32,4 +32,14 @@ export default class AuthentificationService {
       throw error
     }
   }
+
+  async logout({ auth }: HttpContext): Promise<void> {
+    logger.info('logging out user')
+    try {
+      await auth.use('web').logout()
+    } catch (error) {
+      logger.warn(error)
+      throw error
+    }
+  }
 }

@@ -5,7 +5,7 @@ import {
   CredentialDTO,
   ApiResponse,
   HTTPStatusUnprocessableEntity,
-  HTTPStatusServerError,
+  HTTPStatusServerError, HTTPStatusOK,
 } from '@mindboard/shared'
 import { validateData, loginUserCredentialSchema } from '@mindboard/shared'
 import logger from '@adonisjs/core/services/logger'
@@ -35,14 +35,29 @@ export default class AuthAdapter {
         }
       }
 
-      const res = await this.authentificationService.authenticate(validationResult.data, ctx)
+      await this.authentificationService.authenticate(validationResult.data, ctx)
       return {
         success: true,
         code: 200, // okstatus from pr
-        data: res,
       }
     } catch (err) {
       logger.error('error login user' + err)
+      return {
+        success: false,
+        code: HTTPStatusServerError,
+        message: 'internal server error',
+      }
+    }
+  }
+
+  async handleLogout(ctx: HttpContext): Promise<ApiResponse> {
+    try {
+      await this.authentificationService.logout(ctx)
+      return {
+        success: true,
+        code: HTTPStatusOK,
+      }
+    } catch (err) {
       return {
         success: false,
         code: HTTPStatusServerError,
