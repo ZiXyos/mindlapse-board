@@ -1,13 +1,19 @@
-import logger from '@adonisjs/core/services/logger'
 import ProductModel from '#models/product.model'
+
+type UpdateProductFields = {
+  name?: string
+  slug?: string
+  description?: string
+  isActive?: boolean
+}
 
 export default class ProductEntity {
   private constructor(
     private readonly _id: string,
     private _name: string,
     private _slug: string,
-    private _description: string
-    // TODO: Add creation date + update date
+    private _description: string,
+    private _isActive: boolean
   ) {}
 
   get id() {
@@ -22,18 +28,39 @@ export default class ProductEntity {
     return this._slug
   }
 
-  static create(id?: string, name?: string, slug?: string, description?: string): ProductEntity {
+  get description() {
+    return this._description
+  }
+
+  get isActive() {
+    return this._isActive
+  }
+
+  static create(
+    id?: string,
+    name?: string,
+    slug?: string,
+    description?: string,
+    isActive?: boolean
+  ): ProductEntity {
     return new ProductEntity(
       id || 'id-001',
       name || 'simple-product',
       slug || 'simple-product',
-      description || 'Default description'
+      description || 'Default description',
+      isActive ?? true
     )
   }
 
-  update(product: ProductEntity) {
-    logger.info(`Update product with id ${product.id}`)
-    this._name = product.name
+  update(fields: UpdateProductFields) {
+    if (fields.name !== undefined) this._name = fields.name
+    if (fields.slug !== undefined) this._slug = fields.slug
+    if (fields.description !== undefined) this._description = fields.description
+    if (fields.isActive !== undefined) this._isActive = fields.isActive
+  }
+
+  setActive(isActive: boolean) {
+    this._isActive = isActive
   }
 
   toModel(): Partial<ProductModel> {
@@ -42,10 +69,17 @@ export default class ProductEntity {
       name: this._name,
       slug: this._slug,
       description: this._description,
+      isActive: this._isActive,
     }
   }
 
   static from(product: ProductModel) {
-    return new ProductEntity(product.id, product.name, product.slug, product.description || '')
+    return new ProductEntity(
+      product.id,
+      product.name,
+      product.slug,
+      product.description || '',
+      product.isActive
+    )
   }
 }

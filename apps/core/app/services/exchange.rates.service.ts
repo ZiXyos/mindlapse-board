@@ -16,9 +16,7 @@ export default class ExchangeRatesService {
         throw new Error(`API request failed with status: ${response.status}`)
       }
 
-      const data = await response.json()
-
-      // Filter only supported currencies and convert to numbers
+      const data: Record<string, string> = (await response.json()) as Record<string, string>
       const filteredRates: Record<string, number> = {}
 
       this.SUPPORTED_CURRENCIES.forEach((currency) => {
@@ -29,7 +27,7 @@ export default class ExchangeRatesService {
 
       logger.info('successfully fetched exchange rates', {
         baseCurrency,
-        ratesCount: Object.keys(filteredRates).length
+        ratesCount: Object.keys(filteredRates).length,
       })
 
       return filteredRates

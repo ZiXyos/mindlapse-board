@@ -1,0 +1,27 @@
+meta {
+  name: edit_product
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{api.mindboard}}/{{api.version}}/products/:id
+  body: json
+  auth: none
+}
+
+params:path {
+  id: ab3c952f-c04c-414f-a5c6-682c3fd6de45
+}
+
+body:json {
+  {
+    "description": "a simple invisible phone",
+    "variants": [
+      {
+        "id": "7605b913-0036-42ab-8ca8-f20d25277f08",
+        "stockQuantity": 11
+      }
+    ]
+  }
+}

@@ -4,10 +4,14 @@ import logger from '@adonisjs/core/services/logger'
 
 import {
   createProductWithVariantsSchema,
+  updateProductWithVariantsSchema,
   validateData,
   type CreateProductWithVariantsDTO,
+  type UpdateProductWithVariantsDTO,
   type ApiResponse,
   HTTPStatusCreated,
+  HTTPStatusOK,
+  HTTPStatusNotFound,
   HTTPStatusServerError,
   HTTPStatusUnprocessableEntity,
   type ProductQueryRequest,
@@ -16,12 +20,18 @@ import {
 
 import CreateProductWithVariantsService from '#application/create.product.with.variants.service'
 import ProductService from '#application/product.service'
+import UpdateProductWithVariantsService from '#application/update.product.with.variants.service'
+import { UpdateProductWithVariantsCommand, UpdateVariantCommand } from '#commands/variant.commands'
+import { DeleteProductCommand } from "#commands/product.commands";
+import DeleteProductService from "#application/delete.product.service";
 
 @inject()
 export default class ProductsAdapters {
   constructor(
     protected createProductWithVariants: CreateProductWithVariantsService,
-    protected productService: ProductService
+    protected productService: ProductService,
+    protected updateProductWithVariants: UpdateProductWithVariantsService,
+    protected deleteProductService: DeleteProductService,
   ) {}
 
   async handleCreate(ctx: HttpContext): Promise<ApiResponse> {
@@ -133,6 +143,169 @@ export default class ProductsAdapters {
       console.error('error fetching product', error)
       logger.error('error querying products', error)
 
+      return {
+        success: false,
+        code: HTTPStatusServerError,
+        message: 'Internal server error',
+      }
+    }
+  }
+
+  async handleUpdate(ctx: HttpContext, id: string): Promise<ApiResponse> {
+    const { request } = ctx
+
+    try {
+      const validationResult = await validateData<UpdateProductWithVariantsDTO>(
+        updateProductWithVariantsSchema,
+        request.body()
+      )
+
+      if (!validationResult.success) {
+        logger.warn('validation failed: ', validationResult.errors)
+        return {
+          success: false,
+          code: HTTPStatusUnprocessableEntity,
+          message: 'Validation failed',
+          errors: validationResult.errors,
+        }
+      }
+
+      const variantCommands = validationResult.data.variants?.map(
+        (variant: any) =>
+          new UpdateVariantCommand(
+            variant.id,
+            variant.name,
+            variant.sku,
+            variant.options,
+            variant.price,
+            variant.stockQuantity,
+            variant.currency,
+            variant.pricesJson,
+            variant.isDefault,
+            variant.position
+          )
+      )
+
+      const command = new UpdateProductWithVariantsCommand(
+        id,
+        validationResult.data.name,
+        validationResult.data.slug,
+        validationResult.data.description,
+        validationResult.data.isActive,
+        validationResult.data.categoryIds,
+        variantCommands
+      )
+
+      const updatedProduct = await this.updateProductWithVariants.execute(command)
+
+      return {
+        success: true,
+        code: HTTPStatusOK,
+        data: updatedProduct,
+        message: 'Product updated successfully',
+      }
+    } catch (error: any) {
+      logger.error(`Error updating product ${id}:`, error)
+
+      if (error.message === 'Product not found') {
+        return {
+          success: false,
+          code: HTTPStatusNotFound,
+          message: 'Product not found',
+        }
+      }
+
+      return {
+        success: false,
+        code: HTTPStatusServerError,
+        message: 'Internal server error',
+      }
+    }
+  }
+
+  async handleReplace(ctx: HttpContext, id: string): Promise<ApiResponse> {
+    const { request } = ctx
+
+    try {
+      const validationResult = await validateData<UpdateProductWithVariantsDTO>(
+        updateProductWithVariantsSchema,
+        request.body()
+      )
+
+      if (!validationResult.success) {
+        logger.warn('validation failed: ', validationResult.errors)
+        return {
+          success: false,
+          code: HTTPStatusUnprocessableEntity,
+          message: 'Validation failed',
+          errors: validationResult.errors,
+        }
+      }
+
+      const variantCommands = validationResult.data.variants?.map(
+        (variant: any) =>
+          new UpdateVariantCommand(
+            variant.id,
+            variant.name,
+            variant.sku,
+            variant.options,
+            variant.price,
+            variant.stockQuantity,
+            variant.currency,
+            variant.pricesJson,
+            variant.isDefault,
+            variant.position
+          )
+      )
+
+      const command = new UpdateProductWithVariantsCommand(
+        id,
+        validationResult.data.name,
+        validationResult.data.slug,
+        validationResult.data.description,
+        validationResult.data.isActive,
+        validationResult.data.categoryIds,
+        variantCommands
+      )
+
+      const replacedProduct = await this.updateProductWithVariants.execute(command)
+
+      return {
+        success: true,
+        code: HTTPStatusOK,
+        data: replacedProduct,
+        message: 'Product replaced successfully',
+      }
+    } catch (error: any) {
+      logger.error(`Error replacing product ${id}:`, error)
+
+      if (error.message === 'Product not found') {
+        return {
+          success: false,
+          code: HTTPStatusNotFound,
+          message: 'Product not found',
+        }
+      }
+
+      return {
+        success: false,
+        code: HTTPStatusServerError,
+        message: 'Internal server error',
+      }
+    }
+  }
+
+  async deleteProduct(id: string): Promise<ApiResponse> {
+    try {
+      const command = new DeleteProductCommand(id)
+      const deletedProduct = await this.deleteProductService.execute(command)
+      return {
+        success: true,
+        data: deletedProduct,
+        code: HTTPStatusOK,
+        message: 'Product deleted successfully',
+      }
+    } catch (err) {
       return {
         success: false,
         code: HTTPStatusServerError,

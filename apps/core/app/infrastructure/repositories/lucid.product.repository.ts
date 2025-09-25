@@ -37,14 +37,33 @@ export class LucidProductRepository implements ProductRepository {
       return null
     }
 
-    const entity = ProductEntity.from(product)
+    return {
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      description: product.description,
+      isActive: product.isActive,
+      createdAt: product.createdAt.toISO(),
+      updatedAt: product.updatedAt?.toISO() || null,
+    } satisfies Product
+  }
+
+  async update(id: Identifer, product: ProductEntity): Promise<Product> {
+    const existingProduct = await ProductModel.findByOrFail(id)
+
+    const updateData = product.toModel()
+    existingProduct.merge(updateData)
+    await existingProduct.save()
 
     return {
-      id: entity.id,
-      slug: entity.slug,
-      description: '',
-      isActive: true,
-    }
+      id: existingProduct.id,
+      name: existingProduct.name,
+      slug: existingProduct.slug,
+      description: existingProduct.description,
+      isActive: existingProduct.isActive,
+      createdAt: existingProduct.createdAt.toISO(),
+      updatedAt: existingProduct.updatedAt?.toISO() || null,
+    } satisfies Product
   }
 
   query(): ProductQueryBuilder {

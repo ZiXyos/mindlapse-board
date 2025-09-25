@@ -10,5 +10,6 @@ export abstract class ProductRepository {
   abstract create(product: ProductEntity): Promise<Product>
   abstract getAll(): Promise<Array<Product>>
   abstract getById(id: Identifer): Promise<Product | null>
+  abstract update(id: Identifer, product: ProductEntity): Promise<Product>
   abstract query(): ProductQueryBuilder
 }
