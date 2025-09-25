@@ -1,7 +1,7 @@
-import { Identifier } from '@mindboard/shared'
+import { domain, ProductVariant } from '@mindboard/shared'
 import { randomUUID } from 'node:crypto'
 import { Currency, VariantOptions, PricesJson } from '#models/variant.model'
-import ProductVariant from '#models/variant.model'
+import ProductVariantModel from '#models/variant.model'
 
 export default class VariantEntity {
   private constructor(
@@ -90,7 +90,7 @@ export default class VariantEntity {
     )
   }
 
-  toModel(): Partial<ProductVariant> {
+  toModel(): Partial<ProductVariantModel> {
     return {
       id: this._id,
       productId: this._productId,
@@ -106,7 +106,27 @@ export default class VariantEntity {
     }
   }
 
-  static from(variant: ProductVariant): VariantEntity {
+  toProductVariant(): ProductVariant {
+    const cleanPriceJson = Object.fromEntries(
+      Object.entries(this._pricesJson).map(([c, p]) => [c, domain.Price(p)])
+    )
+
+    return {
+      id: domain.Identifier(this._id),
+      productId: domain.Identifier(this._productId),
+      sku: this._sku,
+      name: this._name,
+      options: this._options,
+      position: this._position || 1,
+      price: domain.Price(this._price),
+      stockQuantity: this._stockQuantity,
+      currency: this._currency,
+      pricesJson: cleanPriceJson,
+      isDefault: this._isDefault,
+    }
+  }
+
+  static from(variant: ProductVariantModel): VariantEntity {
     return new VariantEntity(
       variant.id,
       variant.productId,

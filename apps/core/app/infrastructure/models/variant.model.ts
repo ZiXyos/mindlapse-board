@@ -1,19 +1,19 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
-import Product from '#models/product.model'
+import ProductModel from '#models/product.model'
 
 export type VariantOptions = Record<string, string>
 export type PricesJson = Record<string, number>
 export type Currency = 'EUR' | 'USD' | 'KRW' | 'JPY'
 
-export default class ProductVariant extends BaseModel {
+export default class ProductVariantModel extends BaseModel {
   static table = 'product_variants'
 
   @column({ isPrimary: true })
   declare id: string
 
-  @column()
+  @column({ columnName: 'product_id' })
   declare productId: string
 
   @column()
@@ -24,7 +24,14 @@ export default class ProductVariant extends BaseModel {
 
   @column({
     prepare: (value: VariantOptions) => JSON.stringify(value),
-    consume: (value: string) => JSON.parse(value),
+    consume: (value: string) => {
+      if (!value || value === '[object Object]') return {}
+      try {
+        return JSON.parse(value)
+      } catch {
+        return {}
+      }
+    },
   })
   declare options: VariantOptions
 
@@ -42,7 +49,14 @@ export default class ProductVariant extends BaseModel {
 
   @column({
     prepare: (value: PricesJson) => JSON.stringify(value),
-    consume: (value: string) => JSON.parse(value),
+    consume: (value: string) => {
+      if (!value || value === '[object Object]') return {}
+      try {
+        return JSON.parse(value)
+      } catch {
+        return {}
+      }
+    },
   })
   declare pricesJson: PricesJson
 
@@ -55,8 +69,10 @@ export default class ProductVariant extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 
-  @belongsTo(() => Product)
-  declare product: BelongsTo<typeof Product>
+  @belongsTo(() => ProductModel, {
+    foreignKey: 'productId',
+  })
+  declare product: BelongsTo<typeof ProductModel>
 
   public getPrice(currency: Currency = 'EUR'): number {
     if (currency === this.currency) {

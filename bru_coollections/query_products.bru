@@ -1,0 +1,29 @@
+meta {
+  name: query_products
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{api.mindboard}}/{{api.version}}/products/query
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "filters": {
+        "name": "test",
+        "isActive": true,
+        "minPrice": 10,
+        "maxPrice": 100
+      },
+      "sort": {
+        "field": "name",
+        "direction": "asc"
+      },
+      "page": 1,
+      "limit": 20
+    }
+  
+}

@@ -1,1 +1,1 @@
-export type Identifer = string
+export type Identifer = string & { readonly _identifierType: unique symbol }

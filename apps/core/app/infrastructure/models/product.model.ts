@@ -2,10 +2,12 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, hasMany, manyToMany } from '@adonisjs/lucid/orm'
 import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 
-import ProductVariant from '#models/variant.model'
+import ProductVariantModel from '#models/variant.model'
 import Category from '#models/category.model'
 
-export default class Product extends BaseModel {
+export default class ProductModel extends BaseModel {
+  static table = 'products'
+
   @column({ isPrimary: true })
   declare id: string
 
@@ -27,11 +29,15 @@ export default class Product extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 
-  @hasMany(() => ProductVariant)
-  declare variants: HasMany<typeof ProductVariant>
+  @hasMany(() => ProductVariantModel, {
+    foreignKey: 'productId',
+  })
+  declare variants: HasMany<typeof ProductVariantModel>
 
   @manyToMany(() => Category, {
     pivotTable: 'product_categories',
+    pivotForeignKey: 'product_id',
+    pivotRelatedForeignKey: 'category_id',
     pivotTimestamps: {
       createdAt: 'created_at',
       updatedAt: false,

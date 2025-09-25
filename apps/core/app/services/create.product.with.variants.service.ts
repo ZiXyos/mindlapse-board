@@ -6,7 +6,11 @@ import CreateProductService from '#application/create.product.service'
 import CreateVariantService from '#application/create.variant.service'
 import { CreateVariantCommand } from '#commands/variant.commands'
 
-import { CreateProductWithVariantsDTO, CreateVariantDTO, Product } from '@mindboard/shared'
+import {
+  CreateProductWithVariantsDTO,
+  CreateVariantDTO,
+  ProductWithRelations,
+} from '@mindboard/shared'
 import CurrencyConverterService from './currency.converter.service.js'
 
 @inject()
@@ -17,7 +21,7 @@ export default class CreateProductWithVariantsService {
     protected currencyConverterService: CurrencyConverterService
   ) {}
 
-  async execute(productData: CreateProductWithVariantsDTO): Promise<Product> {
+  async execute(productData: CreateProductWithVariantsDTO): Promise<ProductWithRelations> {
     logger.info('creating product with variants', productData)
 
     return Database.transaction(async (trx) => {
@@ -63,7 +67,8 @@ export default class CreateProductWithVariantsService {
         return {
           ...createdProduct,
           variants: createdVariants,
-        } as Product
+          categories: [],
+        }
       } catch (error) {
         logger.error('failed to create product with variants', { error, productData })
         throw error

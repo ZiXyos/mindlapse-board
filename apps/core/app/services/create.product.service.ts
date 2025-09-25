@@ -5,7 +5,7 @@ import { CreateProductCommand } from '#commands/product.commands'
 import { ProductRepository } from '#repositories/product.repository'
 import logger from '@adonisjs/core/services/logger'
 
-import { CreateProductDTO, Product } from '@mindboard/shared'
+import { CreateProductDTO, type Product } from '@mindboard/shared'
 
 @inject()
 export default class CreateProductService {

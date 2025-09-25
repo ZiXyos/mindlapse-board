@@ -1,4 +1,5 @@
 import type { BaseEntity, UserRole } from './common'
+import { Identifer } from './identifier'
 
 export interface User extends BaseEntity {
   email: string
@@ -25,7 +26,7 @@ export interface LoginCredentials {
 }
 
 export interface AuthUser {
-  id: string
+  id: Identifer
   email: string
   fullName: string | null
   role: UserRole

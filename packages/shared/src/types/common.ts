@@ -1,7 +1,9 @@
+import { Identifer } from "./identifier"
+
 export type UserRole = 'ADMIN' | 'USER'
 
 export interface BaseEntity {
-  id: string
+  id: Identifer
   createdAt: string | Date
   updatedAt: string | Date | null
 }
@@ -9,6 +11,7 @@ export interface BaseEntity {
 export interface PaginationParams {
   page?: number
   limit?: number
+  offset?: number
 }
 
 export interface PaginationMeta {

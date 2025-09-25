@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: apps.mindboard.orb.local/v1/products
+  url: {{api.mindboard}}/{{api.version}}/products
   body: json
   auth: none
 }
@@ -31,7 +31,6 @@ body:json {
           "stockQuantity": 10,
           "currency": "EUR",
           "pricesJson": {
-            "EUR": 129999,
             "USD": 139999
           },
           "isDefault": true
@@ -47,10 +46,7 @@ body:json {
           "price": 179999,
           "stockQuantity": 5,
           "currency": "EUR",
-          "pricesJson": {
-            "EUR": 179999,
-            "USD": 199999
-          },
+          "pricesJson": {},
           "isDefault": false
         }
       ]

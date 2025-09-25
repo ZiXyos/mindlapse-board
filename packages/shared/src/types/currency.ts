@@ -1,8 +1,8 @@
 enum Currencies {
-  EUR,
-  USD,
-  KRW,
-  JPY
+  EUR = 'EUR',
+  USD = 'USD',
+  KRW = 'KRW',
+  JPY = 'JPY'
 }
 
 export type Currency = keyof typeof Currencies

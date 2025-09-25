@@ -1,0 +1,15 @@
+meta {
+  name: fetch_product
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{api.mindboard}}/{{api.version}}/products/:id
+  body: none
+  auth: none
+}
+
+params:path {
+  id: c1ed5000-0838-4cdb-aa1f-5b98e4c3c64f
+}
