@@ -1,3 +1,5 @@
 export * from './price'
 export * from './identifier'
 export *  from './queries'
+export * from './price'
+export * from './password'

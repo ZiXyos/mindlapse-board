@@ -17,7 +17,7 @@
       "#exceptions/*": ["./app/domain/exceptions/*"],
       "#queries/*": ["./app/domain/queries/*"],
       "#commands/*": ["./app/domain/commands/*"],
-      "#models/*": ["./app/domain/infrastructure/models/*"],
+      "#models/*": ["./app/infrastructure/models/*"],
       "#mails/*": ["./app/mails/*"],
       "#services/*": ["./app/domain/services/*"],
       "#application/*": ["./app/services/*"],
