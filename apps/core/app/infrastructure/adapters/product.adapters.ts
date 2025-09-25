@@ -10,6 +10,8 @@ import {
   HTTPStatusCreated,
   HTTPStatusServerError,
   HTTPStatusUnprocessableEntity,
+  type ProductQueryRequest,
+  domain,
 } from '@mindboard/shared'
 
 import CreateProductWithVariantsService from '#application/create.product.with.variants.service'
@@ -91,6 +93,45 @@ export default class ProductsAdapters {
     } catch (err) {
       logger.error(`error fetching product id: ${id}`, err)
       logger.error(err)
+
+      return {
+        success: false,
+        code: HTTPStatusServerError,
+        message: 'Internal server error',
+      }
+    }
+  }
+
+  async handleQuery(ctx: HttpContext): Promise<ApiResponse> {
+    const { request } = ctx
+
+    try {
+      const validationResult = await validateData<ProductQueryRequest>(
+        domain.productQuerySchema,
+        request.body()
+      )
+
+      if (!validationResult.success) {
+        logger.warn('validation failed: ', validationResult.errors)
+        return {
+          success: false,
+          code: HTTPStatusUnprocessableEntity,
+          message: 'Validation failed',
+          errors: validationResult.errors,
+        }
+      }
+
+      const result = await this.productService.queryProducts(validationResult.data)
+
+      return {
+        success: true,
+        code: 200,
+        data: result,
+        message: 'Products queried successfully',
+      }
+    } catch (error) {
+      console.error('error fetching product', error)
+      logger.error('error querying products', error)
 
       return {
         success: false,

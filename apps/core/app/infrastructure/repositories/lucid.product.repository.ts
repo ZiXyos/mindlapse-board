@@ -3,6 +3,8 @@ import { inject } from '@adonisjs/core'
 import { ProductRepository } from '#repositories/product.repository'
 import ProductEntity from '#entities/product.entity'
 import ProductModel from '#models/product.model'
+import { LucidProductQueryBuilder } from '#lucidQueries//lucid.product.query.builder'
+import { ProductQueryBuilder } from '#queries/product.queries.builder'
 
 import type { Identifer, Product } from '@mindboard/shared'
 
@@ -43,5 +45,9 @@ export class LucidProductRepository implements ProductRepository {
       description: '',
       isActive: true,
     }
+  }
+
+  query(): ProductQueryBuilder {
+    return new LucidProductQueryBuilder()
   }
 }

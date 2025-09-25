@@ -24,7 +24,14 @@ export default class ProductVariantModel extends BaseModel {
 
   @column({
     prepare: (value: VariantOptions) => JSON.stringify(value),
-    consume: (value: string) => JSON.parse(value),
+    consume: (value: string) => {
+      if (!value || value === '[object Object]') return {}
+      try {
+        return JSON.parse(value)
+      } catch {
+        return {}
+      }
+    },
   })
   declare options: VariantOptions
 
@@ -42,7 +49,14 @@ export default class ProductVariantModel extends BaseModel {
 
   @column({
     prepare: (value: PricesJson) => JSON.stringify(value),
-    consume: (value: string) => JSON.parse(value),
+    consume: (value: string) => {
+      if (!value || value === '[object Object]') return {}
+      try {
+        return JSON.parse(value)
+      } catch {
+        return {}
+      }
+    },
   })
   declare pricesJson: PricesJson
 

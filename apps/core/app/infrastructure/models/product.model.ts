@@ -29,11 +29,15 @@ export default class ProductModel extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 
-  @hasMany(() => ProductVariantModel)
+  @hasMany(() => ProductVariantModel, {
+    foreignKey: 'productId',
+  })
   declare variants: HasMany<typeof ProductVariantModel>
 
   @manyToMany(() => Category, {
     pivotTable: 'product_categories',
+    pivotForeignKey: 'product_id',
+    pivotRelatedForeignKey: 'category_id',
     pivotTimestamps: {
       createdAt: 'created_at',
       updatedAt: false,

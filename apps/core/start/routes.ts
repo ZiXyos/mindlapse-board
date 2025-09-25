@@ -23,9 +23,15 @@ const productRoutes = () => {
       router.get('/', [ProductControllers, 'getProducts'])
       router.post('/', [ProductControllers, 'createProduct'])
 
+      router.post('/query', [ProductControllers, 'queryProducts'])
+
       router.get('/:id', [ProductControllers, 'getProductByID'])
+      router.delete('/:id', [ProductControllers])
+      router.put('/:id', ProductControllers)
+      router.patch('/:id', [ProductControllers])
     })
     .prefix('/products')
+
 }
 
 router

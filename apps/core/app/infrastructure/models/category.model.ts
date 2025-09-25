@@ -18,6 +18,8 @@ export default class Category extends BaseModel {
 
   @manyToMany(() => ProductModel, {
     pivotTable: 'product_categories',
+    pivotForeignKey: 'category_id',
+    pivotRelatedForeignKey: 'product_id',
     pivotTimestamps: {
       createdAt: 'created_at',
       updatedAt: false,

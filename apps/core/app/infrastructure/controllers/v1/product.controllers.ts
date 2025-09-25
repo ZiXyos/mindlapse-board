@@ -26,4 +26,17 @@ export default class ProductControllers {
     if (res.success) ctx.response.status(HTTPStatusCreated).send({ data: res.data })
     else ctx.response.status(HTTPStatusServerError).send(res.message)
   }
+
+  public async queryProducts(ctx: HttpContext) {
+    const res = await this.productAdapter.handleQuery(ctx)
+
+    if (res.success) {
+      ctx.response.send({ data: res.data })
+    } else {
+      ctx.response.status(res.code || HTTPStatusServerError).send({
+        message: res.message,
+        errors: res.errors
+      })
+    }
+  }
 }

@@ -6,7 +6,11 @@ import CreateProductService from '#application/create.product.service'
 import CreateVariantService from '#application/create.variant.service'
 import { CreateVariantCommand } from '#commands/variant.commands'
 
-import { CreateProductWithVariantsDTO, CreateVariantDTO, ProductWithRelations } from '@mindboard/shared'
+import {
+  CreateProductWithVariantsDTO,
+  CreateVariantDTO,
+  ProductWithRelations,
+} from '@mindboard/shared'
 import CurrencyConverterService from './currency.converter.service.js'
 
 @inject()

@@ -2,6 +2,7 @@ import type { BaseEntity } from './common'
 import type { Category } from './category'
 import type { Currency } from "./currency";
 import type { ProductVariant } from './variant'
+import {Identifer} from "@shared/types/identifier";
 
 export type Product = {
   name: string
@@ -46,22 +47,6 @@ export type UpdateProductPayload = {
   categoryIds?: string[]
 }
 
-export type ProductFilters = {
-  name?: string
-  slug?: string
-  isActive?: boolean
-  categoryId?: string
-  minPrice?: number
-  maxPrice?: number
-  inStock?: boolean
-  currency?: Currency
-}
-
-export type ProductSortOptions = {
-  field: 'name' | 'createdAt' | 'updatedAt' | 'price'
-  direction: 'asc' | 'desc'
-}
-
 export type ProductListItem = {
   id: string
   name: string
@@ -77,6 +62,7 @@ export type ProductListItem = {
     stockQuantity: number
     isInStock: boolean
   }
+  variantIds?: Array<Identifer>
   categories: Array<{
     id: string
     name: string
