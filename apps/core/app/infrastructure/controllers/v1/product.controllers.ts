@@ -35,7 +35,39 @@ export default class ProductControllers {
     } else {
       ctx.response.status(res.code || HTTPStatusServerError).send({
         message: res.message,
-        errors: res.errors
+        errors: res.errors,
+      })
+    }
+  }
+
+  public async updateProduct(ctx: HttpContext) {
+    const { id } = ctx.params
+    if (typeof id !== 'string') return
+
+    const res = await this.productAdapter.handleUpdate(ctx, id)
+
+    if (res.success) {
+      ctx.response.status(res.code || 200).send({ data: res.data })
+    } else {
+      ctx.response.status(res.code || HTTPStatusServerError).send({
+        message: res.message,
+        errors: res.errors,
+      })
+    }
+  }
+
+  public async replaceProduct(ctx: HttpContext) {
+    const { id } = ctx.params
+    if (typeof id !== 'string') return
+
+    const res = await this.productAdapter.handleReplace(ctx, id)
+
+    if (res.success) {
+      ctx.response.status(res.code || 200).send({ data: res.data })
+    } else {
+      ctx.response.status(res.code || HTTPStatusServerError).send({
+        message: res.message,
+        errors: res.errors,
       })
     }
   }
