@@ -5,6 +5,7 @@ import { inject } from '@adonisjs/core'
 
 @inject()
 export default class UpdateVariant {
+  // Should return entity
   execute(command: UpdateVariantCommand): Partial<ProductVariantModel> {
     logger.info('updating variant', { variantId: command.id })
 

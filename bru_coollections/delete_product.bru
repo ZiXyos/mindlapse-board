@@ -1,0 +1,15 @@
+meta {
+  name: delete_product
+  type: http
+  seq: 8
+}
+
+delete {
+  url: {{api.mindboard}}/{{api.version}}/products/:id
+  body: none
+  auth: none
+}
+
+params:path {
+  id: ab3c952f-c04c-414f-a5c6-682c3fd6de45
+}

@@ -7,15 +7,18 @@ export class CreateProductCommand {
   ) {}
 }
 
+type UpdateProductCommandParams = {
+  id: string
+  name?: string
+  slug?: string
+  description?: string
+  isActive?: boolean
+  categoryIds?: string[]
+}
 export class UpdateProductCommand {
-  constructor(
-    public readonly id: string,
-    public readonly name?: string,
-    public readonly slug?: string,
-    public readonly description?: string,
-    public readonly isActive?: boolean,
-    public readonly categoryIds?: string[]
-  ) {}
+  constructor(public readonly params: UpdateProductCommandParams) {}
+}
 
-
+export class DeleteProductCommand {
+  constructor(public readonly id: string) {}
 }

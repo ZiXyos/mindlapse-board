@@ -26,7 +26,7 @@ const productRoutes = () => {
       router.post('/query', [ProductControllers, 'queryProducts'])
 
       router.get('/:id', [ProductControllers, 'getProductByID'])
-      router.delete('/:id', [ProductControllers])
+      router.delete('/:id', [ProductControllers, 'deleteProduct'])
       router.put('/:id', [ProductControllers, 'replaceProduct'])
       router.patch('/:id', [ProductControllers, 'updateProduct'])
     })

@@ -51,7 +51,6 @@ export class LucidProductRepository implements ProductRepository {
   async update(id: Identifer, product: ProductEntity): Promise<Product> {
     const existingProduct = await ProductModel.findByOrFail(id)
 
-    // Update the product with the entity data
     const updateData = product.toModel()
     existingProduct.merge(updateData)
     await existingProduct.save()

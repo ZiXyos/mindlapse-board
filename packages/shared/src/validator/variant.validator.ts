@@ -29,6 +29,7 @@ export const createVariantSchema = vine.compile(variantSchemaObject);
 
 export const updateVariantSchema = vine.compile(updateVariantSchemaObject);
 
+// TODO: should extract object to export proper type.
 export const updateProductWithVariantsSchema = vine.compile(
   vine.object({
     name: vine.string().trim().minLength(1).maxLength(255).optional(),
