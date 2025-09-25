@@ -22,13 +22,16 @@ import CreateProductWithVariantsService from '#application/create.product.with.v
 import ProductService from '#application/product.service'
 import UpdateProductWithVariantsService from '#application/update.product.with.variants.service'
 import { UpdateProductWithVariantsCommand, UpdateVariantCommand } from '#commands/variant.commands'
+import { DeleteProductCommand } from "#commands/product.commands";
+import DeleteProductService from "#application/delete.product.service";
 
 @inject()
 export default class ProductsAdapters {
   constructor(
     protected createProductWithVariants: CreateProductWithVariantsService,
     protected productService: ProductService,
-    protected updateProductWithVariants: UpdateProductWithVariantsService
+    protected updateProductWithVariants: UpdateProductWithVariantsService,
+    protected deleteProductService: DeleteProductService,
   ) {}
 
   async handleCreate(ctx: HttpContext): Promise<ApiResponse> {
@@ -239,7 +242,6 @@ export default class ProductsAdapters {
         }
       }
 
-      // Convert variant updates to commands
       const variantCommands = validationResult.data.variants?.map(
         (variant: any) =>
           new UpdateVariantCommand(
@@ -256,7 +258,6 @@ export default class ProductsAdapters {
           )
       )
 
-      // Create command for full replacement with variants support
       const command = new UpdateProductWithVariantsCommand(
         id,
         validationResult.data.name,
@@ -286,6 +287,25 @@ export default class ProductsAdapters {
         }
       }
 
+      return {
+        success: false,
+        code: HTTPStatusServerError,
+        message: 'Internal server error',
+      }
+    }
+  }
+
+  async deleteProduct(id: string): Promise<ApiResponse> {
+    try {
+      const command = new DeleteProductCommand(id)
+      const deletedProduct = await this.deleteProductService.execute(command)
+      return {
+        success: true,
+        data: deletedProduct,
+        code: HTTPStatusOK,
+        message: 'Product deleted successfully',
+      }
+    } catch (err) {
       return {
         success: false,
         code: HTTPStatusServerError,

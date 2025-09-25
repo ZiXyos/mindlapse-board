@@ -1,5 +1,7 @@
 import type { Currency, Price } from '@mindboard/shared'
 
+// TODO: EXTRACT THE PARAMS TYPE IS SO BORING
+
 export class CreateVariantCommand {
   constructor(
     public readonly name: string,

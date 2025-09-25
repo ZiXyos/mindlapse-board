@@ -2,6 +2,7 @@ import ProductsAdapters from '#adapters/product.adapters'
 import { inject } from '@adonisjs/core'
 import { HTTPStatusCreated, HTTPStatusServerError } from '@mindboard/shared'
 import { HttpContext } from '@adonisjs/core/http'
+import logger from "@adonisjs/core/services/logger";
 
 @inject()
 export default class ProductControllers {
@@ -56,6 +57,7 @@ export default class ProductControllers {
     }
   }
 
+  // TODO: implement real replacement feature with history.
   public async replaceProduct(ctx: HttpContext) {
     const { id } = ctx.params
     if (typeof id !== 'string') return
@@ -63,9 +65,25 @@ export default class ProductControllers {
     const res = await this.productAdapter.handleReplace(ctx, id)
 
     if (res.success) {
-      ctx.response.status(res.code || 200).send({ data: res.data })
+      ctx.response.status(res.code).send({ data: res.data })
     } else {
       ctx.response.status(res.code || HTTPStatusServerError).send({
+        message: res.message,
+        errors: res.errors,
+      })
+    }
+  }
+
+  public async deleteProduct(ctx: HttpContext) {
+    const { id } = ctx.params
+    if (typeof id !== 'string') return
+    logger.info(id + ' to be deleted')
+
+    const res = await this.productAdapter.deleteProduct(id)
+    if (res.success) {
+      ctx.response.status(res.code).send({ data: res.data })
+    } else {
+      ctx.response.status(res.code).send({
         message: res.message,
         errors: res.errors,
       })

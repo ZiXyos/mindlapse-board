@@ -33,7 +33,6 @@ type ProductWithRelations = {
 @inject()
 export default class UpdateProductWithVariantsService {
   constructor(
-    protected productRepository: ProductRepository,
     protected updateProductService: UpdateProduct,
     protected updateVariantService: UpdateVariant,
     protected productActivation: ProductActivation
@@ -53,7 +52,9 @@ export default class UpdateProductWithVariantsService {
         let updatedProduct = existingProduct
         if (this.hasProductUpdates(command)) {
           const productEntity = this.updateProductService.execute(
-            command,
+            {
+              params: { ...command },
+            },
             ProductEntity.from(existingProduct)
           )
 

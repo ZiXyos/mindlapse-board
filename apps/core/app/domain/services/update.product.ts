@@ -5,7 +5,8 @@ import { inject } from '@adonisjs/core'
 
 @inject()
 export default class UpdateProduct {
-  execute(command: UpdateProductCommand, existingProduct: ProductEntity): ProductEntity {
+  execute(productCommand: UpdateProductCommand, existingProduct: ProductEntity): ProductEntity {
+    const command = productCommand.params || {}
     logger.info('updating product', { productId: command.id })
 
     // to mes should clone it before edit idk.
