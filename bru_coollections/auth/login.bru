@@ -1,0 +1,18 @@
+meta {
+  name: login
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{api.mindboard}}/{{api.version}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "username@email.com",
+    "password": "password"
+  }
+}

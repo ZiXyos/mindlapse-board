@@ -8,6 +8,8 @@
 */
 
 import router from '@adonisjs/core/services/router'
+import { HttpContext } from '@adonisjs/core/http'
+const AuthController = () => import('#controllers/v1/auth.controller')
 
 const ProductControllers = () => import('#controllers/v1/product.controllers')
 
@@ -31,11 +33,31 @@ const productRoutes = () => {
       router.patch('/:id', [ProductControllers])
     })
     .prefix('/products')
+}
 
+const userRoutes = () => {
+  router
+    .group(() => {
+      router.get('/:id', function (ctx: HttpContext) {
+        ctx.response.status(200).send({ data: { username: 'admin' } })
+      })
+    })
+    .prefix('/user')
+}
+
+const authRoutes = () => {
+  router
+    .group(() => {
+      router.post('/login', [AuthController, 'login'])
+      router.post('/logout', [AuthController, 'logout'])
+    })
+    .prefix('/auth')
 }
 
 router
   .group(() => {
     productRoutes()
+    authRoutes()
+    userRoutes()
   })
   .prefix('/v1')
