@@ -15,7 +15,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@shared/ui': path.resolve(__dirname, '../../packages/ui/src'),
-      '@': path.resolve(__dirname, '../../packages/ui/src')
+      '@': path.resolve(__dirname, '../../packages/ui/src'),
+      '@mindboard/shared': path.resolve(__dirname, '../../packages/shared/src')
     }
   },
   server: {

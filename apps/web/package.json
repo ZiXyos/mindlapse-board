@@ -11,14 +11,16 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
-    "@shared/ui": "workspace:*",
     "@mindboard/shared": "workspace:*",
+    "@shared/ui": "workspace:*",
     "@tanstack/react-query": "^5.90.1",
     "@tanstack/react-router": "^1.131.50",
     "@tanstack/react-router-devtools": "^1.131.50",
+    "@tanstack/react-table": "^8.21.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.63.0",
+    "sonner": "^2.0.7",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

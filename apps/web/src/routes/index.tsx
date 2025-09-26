@@ -1,19 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import  { useEffect, useState } from "react";
 
 import { create } from "zustand";
 
-import reactLogo from "../assets/react.svg";
-import viteLogo from "/vite.svg";
-
 import Layout from "../layout.tsx";
-import {DataTable} from "@shared/ui/components/data.table";
-import type { ProductWithVariantsAndCategories } from '@mindboard/shared'
-import {productsPlaceholder} from "@shared/ui/components/dummy.ts";
-import {productColumns} from "@shared/ui/lib/data.table.props";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@shared/ui/components/ui/card";
 import {Badge} from "@shared/ui/components/ui/badge";
-import {Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator} from "@shared/ui/components/ui/breadcrumb";
+import {ProductTable} from "../components/product.table.tsx";
+import {productsPlaceholder} from "../components/dummy";
 
 interface CounterState {
   count: number
@@ -27,21 +20,10 @@ const useCount = create<CounterState>()((set) => ({
   reset: () => set(() => ({ count: 0 })),
 }))
 
-const  getProductsData = async (): Promise<Array<ProductWithVariantsAndCategories>> => {
-  /* query hools to move */
-  return productsPlaceholder
-}
-
 function Index() {
   const count = useCount(state => state.count)
   const increase = useCount(state => state.increase)
   const reset = useCount(state => state.reset)
-
-  const [data, setData] = useState<ProductWithVariantsAndCategories[]>([])
-
-  useEffect(() => {
-    getProductsData().then(setData)
-  }, [])
 
   return (
     <>
@@ -53,10 +35,10 @@ function Index() {
                   <CardTitle className="text-sm font-medium">
                     Total Products
                   </CardTitle>
-                  <Badge variant="secondary">{data.length}</Badge>
+                  <Badge variant="secondary">{productsPlaceholder.length}</Badge>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{data.length}</div>
+                  <div className="text-2xl font-bold">{productsPlaceholder.length}</div>
                   <p className="text-xs text-muted-foreground">
                     +2 from last month
                   </p>
@@ -126,7 +108,7 @@ function Index() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <DataTable columns={productColumns} data={data} />
+                <ProductTable />
               </CardContent>
             </Card>
           </div>

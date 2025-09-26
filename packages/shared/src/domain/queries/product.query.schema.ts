@@ -1,7 +1,7 @@
 import vine from "@vinejs/vine";
 import {Infer} from "@vinejs/vine/types";
-import { productFilterObject } from "@shared/domain";
-import { productSortObject } from "@shared/domain";
+import { productFilterObject } from "../index";
+import { productSortObject } from "../index";
 
 export const productQuerySchema = vine.compile(
     vine.object({

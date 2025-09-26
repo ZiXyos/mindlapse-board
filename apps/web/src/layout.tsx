@@ -2,6 +2,7 @@ import {SidebarInset, SidebarProvider, SidebarTrigger} from "@shared/ui/componen
 import {AppSidebar} from "@shared/ui/components/app.sidebar";
 import type React from "react";
 import {AppHeader} from "@shared/ui/components/app.header";
+import {Toaster} from "@shared/ui/components/ui/toast";
 
 export default function Layout({children}: { children: React.ReactNode }) {
   return (
@@ -19,6 +20,7 @@ export default function Layout({children}: { children: React.ReactNode }) {
           </div>
         </div>
       </SidebarInset>
+      <Toaster />
     </SidebarProvider>
   )
 }
