@@ -64,7 +64,6 @@ export const useAuthStore = create<AuthStore>()(
   )
 )
 
-// Selectors for better performance
 export const useAuthUser = () => useAuthStore((state) => state.user)
 export const useIsAuthenticated = () => useAuthStore((state) => state.isAuthenticated)
 export const useAuthLoading = () => useAuthStore((state) => state.isLoading)

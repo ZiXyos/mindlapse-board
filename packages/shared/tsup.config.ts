@@ -10,7 +10,7 @@ export default defineConfig({
       declaration: true,
       skipLibCheck: true
     }
-  }, // Enable TypeScript declarations with fixed config
+  },
   clean: true,
   sourcemap: true,
   external: ['@vinejs/vine']
