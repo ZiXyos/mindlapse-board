@@ -1,11 +1,12 @@
 import { HTTPClient } from "../http-client";
 import { productsRoutes } from '../api-routes'
-import type { 
-  ProductListItem, 
-  Product, 
-  CreateProductPayload, 
+import type {
+  ProductListItem,
+  Product,
+  CreateProductPayload,
   UpdateProductPayload,
-  ProductWithVariantsAndCategories 
+  ProductWithVariantsAndCategories,
+  UpdateProductWithVariantsDTO,
 } from '@mindboard/shared'
 import type { RequestOptions } from "../interfaces";
 
@@ -36,7 +37,7 @@ export class ProductRes {
     )
   }
 
-  public async updateProduct(id: string, payload: UpdateProductPayload) {
+  public async updateProduct(id: string, payload: UpdateProductWithVariantsDTO) {
     const path = productsRoutes.update.createPath({ id })
     return await this.client.req<{ data: Product }>(
       productsRoutes.update.method,
@@ -45,7 +46,7 @@ export class ProductRes {
     )
   }
 
-  public async replaceProduct(id: string, payload: UpdateProductPayload) {
+  public async replaceProduct(id: string, payload: UpdateProductWithVariantsDTO) {
     const path = productsRoutes.replace.createPath({ id })
     return await this.client.req<{ data: Product }>(
       productsRoutes.replace.method,
@@ -66,7 +67,7 @@ export class ProductRes {
     return await this.client.req<{ data: ProductListItem[] }>(
       productsRoutes.query.method,
       productsRoutes.query.path,
-      { 
+      {
         body: queryPayload,
         ...options
       }

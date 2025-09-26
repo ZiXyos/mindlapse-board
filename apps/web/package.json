@@ -19,6 +19,7 @@
     "@tanstack/react-router": "^1.131.50",
     "@tanstack/react-router-devtools": "^1.131.50",
     "@tanstack/react-table": "^8.21.3",
+    "lucide-react": "^0.544.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.63.0",

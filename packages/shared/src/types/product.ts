@@ -55,6 +55,17 @@ export type ProductListItem = {
   isActive: boolean
   createdAt: string | Date
   updatedAt: string | Date | null
+  variants: Array<{
+    id: string
+    sku: string
+    name: string
+    price: number
+    currency: Currency
+    stockQuantity: number
+    isInStock: boolean
+    isDefault: boolean
+    options: Record<string, string>
+  }>
   defaultVariant?: {
     id: string
     price: number
@@ -62,7 +73,11 @@ export type ProductListItem = {
     stockQuantity: number
     isInStock: boolean
   }
-  variantIds?: Array<Identifer>
+  priceRange?: {
+    min: number
+    max: number
+    currency: Currency
+  }
   categories: Array<{
     id: string
     name: string

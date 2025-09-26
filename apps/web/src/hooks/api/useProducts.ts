@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import type {
   CreateProductPayload,
-  UpdateProductPayload,
+  UpdateProductPayload, UpdateProductWithVariantsDTO,
 } from "@mindboard/shared"
 import type { RequestOptions } from "@mindboard/sdk/interfaces"
 import { Client } from "@mindboard/sdk"
@@ -10,7 +10,7 @@ const client = new Client(
   import.meta.env.VITE_API_URL || 'http://localhost:3333'
 )
 
-interface ProductQueryFilters {
+export interface ProductQueryFilters {
   name?: string
   isActive?: boolean
   categoryIds?: string[]
@@ -20,7 +20,7 @@ interface ProductQueryFilters {
   sortOrder?: 'asc' | 'desc'
 }
 
-interface ProductQueryPayload {
+export interface ProductQueryPayload {
   filters?: ProductQueryFilters
   search?: string
   pagination?: {
@@ -84,7 +84,7 @@ export const useProducts = () => {
         }
         return response.data
       },
-      enabled: !!queryPayload,
+      enabled: true,
       staleTime: 1000 * 60 * 2, // 2 minutes for search results
     })
   }
@@ -107,7 +107,7 @@ export const useProducts = () => {
   })
 
   const updateProductMutation = useMutation({
-    mutationFn: async ({ id, payload }: { id: string; payload: UpdateProductPayload }) => {
+    mutationFn: async ({ id, payload }: { id: string; payload: UpdateProductWithVariantsDTO }) => {
       const response = await client.products.updateProduct(id, payload)
       if (!response.success) {
         throw new Error(response.message || 'Failed to update product')
@@ -125,7 +125,7 @@ export const useProducts = () => {
   })
 
   const replaceProductMutation = useMutation({
-    mutationFn: async ({ id, payload }: { id: string; payload: UpdateProductPayload }) => {
+    mutationFn: async ({ id, payload }: { id: string; payload: UpdateProductWithVariantsDTO }) => {
       const response = await client.products.replaceProduct(id, payload)
       if (!response.success) {
         throw new Error(response.message || 'Failed to replace product')
