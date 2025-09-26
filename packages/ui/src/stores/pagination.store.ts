@@ -80,8 +80,8 @@ export const useTablePaginationStore = create<TablePaginationStore>()(
     updateFromResponse: (response: PaginatedResponse<any>) => {
       const { meta } = response
       set({
-        pageIndex: meta.page - 1,
-        pageSize: meta.limit,
+        pageIndex: meta.currentPage - 1,
+        pageSize: meta.perPage,
         total: meta.total
       })
     }

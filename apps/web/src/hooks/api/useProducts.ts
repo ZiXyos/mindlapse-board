@@ -1,7 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import type {
   CreateProductPayload,
-  UpdateProductPayload, UpdateProductWithVariantsDTO,
+  UpdateProductPayload,
+  UpdateProductWithVariantsDTO,
+  ProductQueryRequest,
 } from "@mindboard/shared"
 import type { RequestOptions } from "@mindboard/sdk/interfaces"
 import { Client } from "@mindboard/sdk"
@@ -10,36 +12,13 @@ const client = new Client(
   import.meta.env.VITE_API_URL || 'http://localhost:3333'
 )
 
-export interface ProductQueryFilters {
-  name?: string
-  isActive?: boolean
-  categoryIds?: string[]
-  page?: number
-  limit?: number
-  sortBy?: string
-  sortOrder?: 'asc' | 'desc'
-}
-
-export interface ProductQueryPayload {
-  filters?: ProductQueryFilters
-  search?: string
-  pagination?: {
-    page: number
-    limit: number
-  }
-  sorting?: {
-    field: string
-    direction: 'asc' | 'desc'
-  }
-}
-
 export const productQueryKeys = {
   all: ['products'] as const,
   lists: () => [...productQueryKeys.all, 'list'] as const,
   list: (filters?: Partial<RequestOptions>) => [...productQueryKeys.lists(), { filters }] as const,
   details: () => [...productQueryKeys.all, 'detail'] as const,
   detail: (id: string) => [...productQueryKeys.details(), id] as const,
-  query: (queryPayload?: ProductQueryPayload) => [...productQueryKeys.all, 'query', { queryPayload }] as const,
+  query: (queryPayload?: ProductQueryRequest) => [...productQueryKeys.all, 'query', { queryPayload }] as const,
 }
 
 export const useProducts = () => {
@@ -74,7 +53,7 @@ export const useProducts = () => {
     })
   }
 
-  const useProductsAdvancedQuery = (queryPayload: ProductQueryPayload, options?: Partial<RequestOptions>) => {
+  const useProductsAdvancedQuery = (queryPayload: ProductQueryRequest, options?: Partial<RequestOptions>) => {
     return useQuery({
       queryKey: productQueryKeys.query(queryPayload),
       queryFn: async () => {
@@ -82,6 +61,7 @@ export const useProducts = () => {
         if (!response.success) {
           throw new Error(response.message || 'Failed to query products')
         }
+        // Handle triple-nested response: response.data.data contains the actual data
         return response.data
       },
       enabled: true,
@@ -197,7 +177,7 @@ export const useProduct = (id: string) => {
   return useProductQuery(id)
 }
 
-export const useProductsSearch = (queryPayload: ProductQueryPayload, options?: Partial<RequestOptions>) => {
+export const useProductsSearch = (queryPayload: ProductQueryRequest, options?: Partial<RequestOptions>) => {
   const { useProductsAdvancedQuery } = useProducts()
   return useProductsAdvancedQuery(queryPayload, options)
 }

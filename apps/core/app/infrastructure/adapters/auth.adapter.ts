@@ -38,7 +38,6 @@ export default class AuthAdapter {
 
       await this.authentificationService.authenticate(validationResult.data, ctx)
 
-      // Return user data after successful authentication
       const user = ctx.auth.user
       return {
         success: true,
@@ -48,9 +47,8 @@ export default class AuthAdapter {
             id: user?.id,
             email: user?.email,
             fullName: user?.fullName,
-            role: user?.role
-          }
-        }
+          },
+        },
       }
     } catch (err) {
       logger.error('error login user' + err)

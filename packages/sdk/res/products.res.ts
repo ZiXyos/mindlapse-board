@@ -7,6 +7,7 @@ import type {
   UpdateProductPayload,
   ProductWithVariantsAndCategories,
   UpdateProductWithVariantsDTO,
+  ProductQueryRequest,
 } from '@mindboard/shared'
 import type { RequestOptions } from "../interfaces";
 
@@ -63,8 +64,18 @@ export class ProductRes {
     )
   }
 
-  public async queryProducts(queryPayload: any, options?: Partial<RequestOptions>) {
-    return await this.client.req<{ data: ProductListItem[] }>(
+  public async queryProducts(queryPayload: ProductQueryRequest, options?: Partial<RequestOptions>) {
+    return await this.client.req<{
+      data: ProductListItem[],
+      meta: {
+        currentPage: number,
+        perPage: number,
+        total: number,
+        lastPage: number,
+        hasNext: boolean,
+        hasPrev: boolean
+      }
+    }>(
       productsRoutes.query.method,
       productsRoutes.query.path,
       {

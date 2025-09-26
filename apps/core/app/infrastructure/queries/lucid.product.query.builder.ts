@@ -125,11 +125,13 @@ export class LucidProductQueryBuilder extends ProductQueryBuilder {
 
     return {
       data: data.map((product) => this.mapToDoMainType(product)),
-      pagination: {
-        page: this.pagination?.page ?? 1,
-        limit: this.pagination?.limit ?? 10,
-        total,
-        totalPages: Math.ceil(total / (this.pagination?.limit ?? 10)),
+      meta: {
+        currentPage: this.pagination?.page ?? 1,
+        perPage: this.pagination?.limit ?? 10,
+        total: Number(total),
+        lastPage: Math.ceil(Number(total) / (this.pagination?.limit ?? 10)),
+        hasNext: (this.pagination?.page ?? 1) < Math.ceil(Number(total) / (this.pagination?.limit ?? 10)),
+        hasPrev: (this.pagination?.page ?? 1) > 1,
       },
     }
   }

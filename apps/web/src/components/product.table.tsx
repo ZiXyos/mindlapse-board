@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@shared/ui/components/ui/badge";
 import { ArrowUpDown, ChevronDown, ChevronRight } from "lucide-react";
 import { usePaginationController } from "@shared/ui/hooks/use-pagination-controller";
-import { useProductsSearch, useProductsList, useProducts, type ProductQueryPayload, type ProductQueryFilters } from "../hooks/api/useProducts";
+import { useProductsSearch, useProductsList, useProducts } from "../hooks/api/useProducts";
+import type { ProductQueryRequest, ProductFilters } from "@mindboard/shared";
 import { TablePagination } from "@shared/ui/components/table-pagination";
 
 const VariantRow = ({ variant, onStockUpdate }: {
@@ -222,15 +223,19 @@ export const ProductTable = () => {
     direction: 'asc'
   });
 
-  const [filters, setFilters] = useState<ProductQueryFilters>({
+  const [filters, setFilters] = useState<ProductFilters>({
     isActive: true,
   });
 
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
 
-  const queryPayload: ProductQueryPayload = useMemo(() => ({
-    pagination: queryParams,
-    sorting: sortOrder,
+  const queryPayload: ProductQueryRequest = useMemo(() => ({
+    page: queryParams.page,
+    limit: queryParams.limit,
+    sort: {
+      field: sortOrder.field,
+      direction: sortOrder.direction
+    },
     filters: filters
   }), [queryParams, sortOrder, filters]);
 
@@ -244,9 +249,10 @@ export const ProductTable = () => {
   const { data: simpleResult } = useProductsList();
 
   const transformedData = useMemo(() => {
-    if (!queryResult?.data?.data) return [];
+    const products = queryResult?.data?.data || [];
+    if (!products || products.length === 0) return [];
 
-    return queryResult.data.data.map((product: any): ProductListItem => {
+    return products.map((product: any): ProductListItem => {
       const variants = product.variants || [];
 
       const transformedVariants = variants.map((variant: any) => ({
@@ -310,10 +316,24 @@ export const ProductTable = () => {
   }, [queryPayload, queryResult, simpleResult, isLoading, isError, error, transformedData]);
 
   React.useEffect(() => {
-    if (queryResult?.data?.pagination?.total !== undefined) {
-      setTotal(Number(queryResult.data.pagination.total));
+    const total = queryResult?.data?.meta?.total;
+    console.log('Pagination Debug:', {
+      total,
+      totalType: typeof total,
+      totalAsNumber: Number(total),
+      queryResultMeta: queryResult?.data?.meta
+    });
+
+    if (total !== undefined && total !== null) {
+      const totalAsNumber = Number(total);
+      if (!isNaN(totalAsNumber)) {
+        setTotal(totalAsNumber);
+        console.log('Set total to:', totalAsNumber);
+      } else {
+        console.error('Invalid total value:', total);
+      }
     }
-  }, [queryResult?.data?.pagination?.total, setTotal]);
+  }, [queryResult?.data?.meta?.total, setTotal]);
 
   const handleSortChange = useCallback((field: keyof ProductListItem) => {
     setSortOrder(prev => ({
@@ -322,7 +342,7 @@ export const ProductTable = () => {
     }));
   }, []);
 
-  const handleFilterChange = useCallback((newFilters: Partial<ProductQueryFilters>) => {
+  const handleFilterChange = useCallback((newFilters: Partial<ProductFilters>) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
   }, []);
 

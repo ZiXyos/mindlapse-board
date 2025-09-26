@@ -2,7 +2,6 @@ import type { BaseEntity } from './common'
 import type { Category } from './category'
 import type { Currency } from "./currency";
 import type { ProductVariant } from './variant'
-import {Identifer} from "./identifier";
 
 export type Product = {
   name: string
