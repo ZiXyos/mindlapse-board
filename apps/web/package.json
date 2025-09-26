@@ -12,7 +12,10 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@shared/ui": "workspace:*",
+    "@mindboard/shared": "workspace:*",
     "@tanstack/react-query": "^5.90.1",
+    "@tanstack/react-router": "^1.131.50",
+    "@tanstack/react-router-devtools": "^1.131.50",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.63.0",
@@ -21,8 +24,6 @@
   "devDependencies": {
     "@eslint/js": "^9.36.0",
     "@tanstack/eslint-plugin-query": "^5.90.1",
-    "@tanstack/react-router": "^1.131.50",
-    "@tanstack/react-router-devtools": "^1.131.50",
     "@tanstack/router-plugin": "^1.131.50",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
