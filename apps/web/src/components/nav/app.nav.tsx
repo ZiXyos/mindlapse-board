@@ -1,9 +1,7 @@
 import React from "react";
 import {Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarSeparator} from "@shared/ui/components/ui/sidebar";
 import {Box, Home, Tag, Truck} from "lucide-react";
-import {NavUser} from "@/components/nav.user";
-import {AppHeader} from "@/components/app.header";
-import {Separator} from "@/components/ui/separator";
+import {NavUser} from "./user.nav.tsx";
 import { Link, useLocation } from '@tanstack/react-router';
 
 type SideBarItemProps = {

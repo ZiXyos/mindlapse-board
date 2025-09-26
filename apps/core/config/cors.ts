@@ -2,23 +2,10 @@ import { defineConfig } from '@adonisjs/cors'
 
 const corsConfig = defineConfig({
   enabled: true,
-  origin: (origin, callback) => {
-    const allowedOrigins = [
-      'http://localhost:5173',
-      'http://localhost:3000',
-      'http://mindboard.local',
-      'http://api.mindboard.local',
-      'https://mindboard.local',
-      'https://api.mindboard.local'
-    ]
-    
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  },
+  origin: ['https://mindboard.local', 'http://localhost:3000', 'http://localhost:5173'],
   credentials: true,
+  methods: ['GET', 'PUT', 'PATCH', 'POST', 'DELETE', 'HEAD', 'OPTIONS'],
+  headers: true,
   exposeHeaders: [
     'cache-control',
     'content-language',
@@ -26,6 +13,7 @@ const corsConfig = defineConfig({
     'expires',
     'last-modified',
     'pragma',
+    'set-cookie',
   ],
   maxAge: 90,
 })

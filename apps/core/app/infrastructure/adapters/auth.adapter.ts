@@ -2,10 +2,11 @@ import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 
 import {
-  CredentialDTO,
+  type CredentialDTO,
   ApiResponse,
   HTTPStatusUnprocessableEntity,
-  HTTPStatusServerError, HTTPStatusOK,
+  HTTPStatusServerError,
+  HTTPStatusOK,
 } from '@mindboard/shared'
 import { validateData, loginUserCredentialSchema } from '@mindboard/shared'
 import logger from '@adonisjs/core/services/logger'
@@ -36,9 +37,20 @@ export default class AuthAdapter {
       }
 
       await this.authentificationService.authenticate(validationResult.data, ctx)
+
+      // Return user data after successful authentication
+      const user = ctx.auth.user
       return {
         success: true,
-        code: 200, // okstatus from pr
+        code: HTTPStatusOK,
+        data: {
+          user: {
+            id: user?.id,
+            email: user?.email,
+            fullName: user?.fullName,
+            role: user?.role
+          }
+        }
       }
     } catch (err) {
       logger.error('error login user' + err)

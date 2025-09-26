@@ -13,6 +13,22 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * response to the client
    */
   async handle(error: unknown, ctx: HttpContext) {
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'http://localhost:3000',
+      'http://mindboard.local:5173',
+      'http://mindboard.local',
+      'https://mindboard.local',
+      'http://api.mindboard.local',
+      'https://api.mindboard.local'
+    ]
+
+    const origin = ctx.request.header('origin')
+    if (origin && allowedOrigins.includes(origin)) {
+      ctx.response.header('Access-Control-Allow-Origin', origin)
+      ctx.response.header('Access-Control-Allow-Credentials', 'true')
+    }
+
     return super.handle(error, ctx)
   }
 
