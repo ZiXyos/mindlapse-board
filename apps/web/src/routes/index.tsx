@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import {createFileRoute, useNavigate} from "@tanstack/react-router";
 
 import { create } from "zustand";
 
@@ -7,6 +7,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@shared
 import {Badge} from "@shared/ui/components/ui/badge";
 import {ProductTable} from "../components/product.table.tsx";
 import {productsPlaceholder} from "../components/dummy";
+import {useCurrentUser} from "../hooks/api/useCurrentUser.ts";
 
 interface CounterState {
   count: number
@@ -24,6 +25,15 @@ function Index() {
   const count = useCount(state => state.count)
   const increase = useCount(state => state.increase)
   const reset = useCount(state => state.reset)
+
+  const { isAuthenticated, isLoading } = useCurrentUser()
+
+  const navigate = useNavigate()
+  if (!isAuthenticated && !isLoading) {
+    navigate({ to: '/auth'})
+  }
+
+// loading show template
 
   return (
     <>

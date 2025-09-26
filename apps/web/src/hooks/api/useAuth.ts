@@ -55,12 +55,11 @@ export const useAuth = () => {
     },
     onError: (error: Error) => {
       console.error('Logout failed:', error)
-      clearAuthUser() // Clear auth state even if logout fails
+      clearAuthUser()
       setLoading(false)
     }
   })
 
-  // Optional: Query to verify current auth status on app load
   const authStatusQuery = useQuery({
     queryKey: ['auth', 'status'],
     queryFn: async () => {
@@ -68,7 +67,7 @@ export const useAuth = () => {
       // For now, we'll rely on the persisted Zustand state
       return null
     },
-    enabled: false, // Disable by default, enable if you implement auth/me endpoint
+    enabled: false,
   })
 
   return {

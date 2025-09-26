@@ -53,7 +53,6 @@ export const AppHeader = () => {
             </Breadcrumb>
           </div>
           <div className="hidden md:flex items-center gap-2">
-            {/* Space for future header actions */}
           </div>
         </div>
       </div>

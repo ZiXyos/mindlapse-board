@@ -1,5 +1,5 @@
-import {SidebarInset, SidebarProvider, SidebarTrigger} from "@shared/ui/components/ui/sidebar";
-import {AppSidebar} from "@shared/ui/components/app.sidebar";
+import {SidebarInset, SidebarProvider} from "@shared/ui/components/ui/sidebar";
+import {AppSidebar} from "./components/nav/app.nav.tsx";
 import type React from "react";
 import {AppHeader} from "@shared/ui/components/app.header";
 import {Toaster} from "@shared/ui/components/ui/toast";
