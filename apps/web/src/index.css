@@ -69,4 +69,17 @@
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
   }
+
+  /* Container query support for dashboard insets */
+  @container (min-width: 768px) {
+    .dashboard-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @container (min-width: 1024px) {
+    .dashboard-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
 }

@@ -2,9 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { create } from "zustand";
 
-import reactLogo from "../assets/react.svg";
-import viteLogo from "/vite.svg";
 import Layout from "../layout.tsx";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@shared/ui/components/ui/card";
+import {Badge} from "@shared/ui/components/ui/badge";
+import {ProductTable} from "../components/product.table.tsx";
+import {productsPlaceholder} from "../components/dummy";
 
 interface CounterState {
   count: number
@@ -26,31 +28,90 @@ function Index() {
   return (
     <>
         <Layout>
-            <div>
-                <a href="https://vite.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo" />
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo" />
-                </a>
-            </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={increase}>
-                    count is {count}
-                </button>
-                <div className="card">
-                    <button onClick={reset}>
-                        reset counter
+          <div className="space-y-6">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Total Products
+                  </CardTitle>
+                  <Badge variant="secondary">{productsPlaceholder.length}</Badge>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{productsPlaceholder.length}</div>
+                  <p className="text-xs text-muted-foreground">
+                    +2 from last month
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Active Categories
+                  </CardTitle>
+                  <Badge variant="outline">Live</Badge>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">12</div>
+                  <p className="text-xs text-muted-foreground">
+                    +4 from last month
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Orders</CardTitle>
+                  <Badge>24</Badge>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">245</div>
+                  <p className="text-xs text-muted-foreground">
+                    +12% from last month
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Counter Demo
+                  </CardTitle>
+                  <Badge variant="destructive">{count}</Badge>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{count}</div>
+                  <div className="flex gap-2 mt-2">
+                    <button
+                      className="text-xs bg-primary text-primary-foreground hover:bg-primary/80 px-2 py-1 rounded"
+                      onClick={increase}
+                    >
+                      Increase
                     </button>
-                </div>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
+                    <button
+                      className="text-xs bg-secondary text-secondary-foreground hover:bg-secondary/80 px-2 py-1 rounded"
+                      onClick={reset}
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Products</CardTitle>
+                <CardDescription>
+                  Manage your product inventory and catalog
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ProductTable />
+              </CardContent>
+            </Card>
+          </div>
         </Layout>
     </>
   );

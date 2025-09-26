@@ -9,7 +9,9 @@
     "paths": {
       "@/*": ["./src/*"],
       "@shared/ui": ["../../packages/ui/src/*"],
-      "@shared/ui/*": ["../../packages/ui/src/*"]
+      "@shared/ui/*": ["../../packages/ui/src/*"],
+      "@mindboard/shared": ["../../packages/shared/src/index.ts"],
+      "@mindboard/shared/*": ["../../packages/shared/src/*"]
     }
   }
 }

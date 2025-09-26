@@ -1,9 +1,16 @@
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
-  entry: ['index.ts'],
+  entry: ['src/index.ts'],
   format: ['cjs', 'esm'],
-  dts: false, // Disable for now - we'll handle types separately
+  dts: {
+    resolve: true,
+    compilerOptions: {
+      composite: false,
+      declaration: true,
+      skipLibCheck: true
+    }
+  }, // Enable TypeScript declarations with fixed config
   clean: true,
   sourcemap: true,
   external: ['@vinejs/vine']

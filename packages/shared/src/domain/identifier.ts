@@ -1,3 +1,3 @@
-import {Identifer as IdentifierType } from "@shared/types";
+import {Identifer as IdentifierType } from "../types";
 
 export const Identifier = (ID: string): IdentifierType => ID as IdentifierType
