@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@shared/ui/components/ui/badge";
 import { ArrowUpDown, ChevronDown, ChevronRight } from "lucide-react";
 import { usePaginationController } from "@shared/ui/hooks/use-pagination-controller";
+import { useTablePaginationStore } from "@shared/ui/stores/pagination.store";
 import { useProductsSearch, useProductsList, useProducts } from "../hooks/api/useProducts";
 import type { ProductQueryRequest, ProductFilters } from "@mindboard/shared";
 import { TablePagination } from "@shared/ui/components/table-pagination";
@@ -213,7 +214,8 @@ const createProductColumns = (
 ]
 
 export const ProductTable = () => {
-  const { pagination, queryParams, setTotal } = usePaginationController();
+  const { pagination, queryParams } = usePaginationController();
+  const paginationStore = useTablePaginationStore();
   const { updateProduct } = useProducts();
   const [sortOrder, setSortOrder] = useState<{
     field: keyof ProductListItem
@@ -316,24 +318,26 @@ export const ProductTable = () => {
   }, [queryPayload, queryResult, simpleResult, isLoading, isError, error, transformedData]);
 
   React.useEffect(() => {
-    const total = queryResult?.data?.meta?.total;
-    console.log('Pagination Debug:', {
-      total,
-      totalType: typeof total,
-      totalAsNumber: Number(total),
-      queryResultMeta: queryResult?.data?.meta
-    });
+    if (queryResult?.data?.meta) {
+      const meta = queryResult.data.meta;
+      console.log('Pagination Debug:', {
+        meta,
+        syncingPagination: true
+      });
 
-    if (total !== undefined && total !== null) {
-      const totalAsNumber = Number(total);
-      if (!isNaN(totalAsNumber)) {
-        setTotal(totalAsNumber);
-        console.log('Set total to:', totalAsNumber);
-      } else {
-        console.error('Invalid total value:', total);
-      }
+      // Use the store's updateFromResponse to sync entire pagination state
+      paginationStore.updateFromResponse({
+        data: queryResult.data.data,
+        meta: meta
+      });
+      console.log('Pagination state synchronized with:', meta);
     }
-  }, [queryResult?.data?.meta?.total, setTotal]);
+  }, [
+    queryResult?.data?.meta?.currentPage,
+    queryResult?.data?.meta?.perPage,
+    queryResult?.data?.meta?.total,
+    queryResult?.data?.meta?.lastPage
+  ]);
 
   const handleSortChange = useCallback((field: keyof ProductListItem) => {
     setSortOrder(prev => ({
