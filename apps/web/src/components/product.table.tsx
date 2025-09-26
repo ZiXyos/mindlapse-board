@@ -1,11 +1,13 @@
+import React from "react";
 import type {ColumnDef} from "@tanstack/react-table";
-import type {ProductWithVariantsAndCategories} from "@mindboard/shared";
+import type {ProductWithVariantsAndCategories, PaginatedResponse, PaginationParams} from "@mindboard/shared";
 import {DataTable} from "@shared/ui/components/data.table";
-import {useEffect, useState} from "react";
+import {useQuery} from "@tanstack/react-query";
 import {productsPlaceholder} from "./dummy";
 import { toast } from 'sonner'
 import {Label} from "@shared/ui/components/ui/label";
 import { Input} from "@shared/ui/components/ui/input";
+import { usePaginationController } from "@shared/ui/hooks/use-pagination-controller";
 
 const productColumns: Array<ColumnDef<ProductWithVariantsAndCategories>> = [
   {
@@ -81,19 +83,59 @@ const productColumns: Array<ColumnDef<ProductWithVariantsAndCategories>> = [
 ]
 
 
-const  getProductsData = async (): Promise<Array<ProductWithVariantsAndCategories>> => {
-  /* query hools to move */
-  return productsPlaceholder
+const getProductsData = async (params: PaginationParams): Promise<PaginatedResponse<ProductWithVariantsAndCategories>> => {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  const page = params.page || 1;
+  const limit = params.limit || 10;
+  const offset = (page - 1) * limit;
+  
+  const paginatedData = productsPlaceholder.slice(offset, offset + limit);
+  const total = productsPlaceholder.length;
+  const lastPage = Math.ceil(total / limit);
+  
+  return {
+    data: paginatedData,
+    meta: {
+      currentPage: page,
+      perPage: limit,
+      total,
+      lastPage,
+      hasNext: page < lastPage,
+      hasPrev: page > 1,
+    }
+  };
 }
 
 export const ProductTable = () => {
-  const [data, setData] = useState<ProductWithVariantsAndCategories[]>([])
+  const { pagination, queryParams, updateFromResponse, setTotal } = usePaginationController();
+  
+  const { data: queryResult, isLoading, isError } = useQuery({
+    queryKey: ["products", queryParams],
+    queryFn: () => getProductsData(queryParams),
+    keepPreviousData: true,
+  });
 
-  useEffect(() => {
-    getProductsData().then(setData)
-  }, [])
+  React.useEffect(() => {
+    if (queryResult?.meta?.total !== undefined) {
+      setTotal(queryResult.meta.total);
+    }
+  }, [queryResult?.meta?.total, setTotal]);
+
+  if (isError) {
+    return (
+      <div className="text-red-500 text-center py-8">
+        Error loading products. Please try again.
+      </div>
+    );
+  }
 
   return (
-    <DataTable columns={productColumns} data={data} />
-  )
+    <DataTable 
+      columns={productColumns} 
+      data={queryResult?.data || []} 
+      isLoading={isLoading}
+      pagination={pagination}
+    />
+  );
 }
