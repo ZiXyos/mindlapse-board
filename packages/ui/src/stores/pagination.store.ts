@@ -44,24 +44,36 @@ export const useTablePaginationStore = create<TablePaginationStore>()(
     
     nextPage: () => {
       const { pageIndex, hasNextPage } = get()
+      console.log('nextPage called:', { pageIndex, hasNextPage })
       if (hasNextPage) {
-        set({ pageIndex: pageIndex + 1 })
+        const newPageIndex = pageIndex + 1
+        console.log('Moving to next page:', newPageIndex)
+        set({ pageIndex: newPageIndex })
+      } else {
+        console.log('Cannot go to next page - already at last page')
       }
     },
     
     previousPage: () => {
       const { pageIndex, hasPreviousPage } = get()
+      console.log('previousPage called:', { pageIndex, hasPreviousPage })
       if (hasPreviousPage) {
-        set({ pageIndex: pageIndex - 1 })
+        const newPageIndex = pageIndex - 1
+        console.log('Moving to previous page:', newPageIndex)
+        set({ pageIndex: newPageIndex })
+      } else {
+        console.log('Cannot go to previous page - already at first page')
       }
     },
     
     firstPage: () => {
+      console.log('firstPage called')
       set({ pageIndex: 0 })
     },
-    
+
     lastPage: () => {
       const { totalPages } = get()
+      console.log('lastPage called:', { totalPages, targetPageIndex: totalPages - 1 })
       set({ pageIndex: Math.max(0, totalPages - 1) })
     },
     
@@ -71,19 +83,28 @@ export const useTablePaginationStore = create<TablePaginationStore>()(
     
     getQueryParams: (): PaginationQuery => {
       const { pageIndex, pageSize } = get()
-      return {
+      const queryParams = {
         page: pageIndex + 1,
         limit: pageSize
       }
+      console.log('getQueryParams called:', { pageIndex, pageSize, queryParams })
+      return queryParams
     },
     
     updateFromResponse: (response: PaginatedResponse<any>) => {
+      console.log('Store updateFromResponse called with:', response)
       const { meta } = response
-      set({
+      console.log('Extracted meta:', meta)
+
+      const newState = {
         pageIndex: meta.currentPage - 1,
         pageSize: meta.perPage,
         total: meta.total
-      })
+      }
+      console.log('Setting new pagination state:', newState)
+      console.log('Calculated totalPages:', Math.ceil(meta.total / meta.perPage))
+
+      set(newState)
     }
   }))
 )

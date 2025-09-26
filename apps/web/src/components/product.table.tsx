@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
 import type {ColumnDef} from "@tanstack/react-table";
-import type {ProductListItem} from "@mindboard/shared";
+import type {ProductListItem, ProductWithVariantsAndCategories} from "@mindboard/shared";
 import {DataTable} from "@shared/ui/components/data.table";
 import { toast } from 'sonner'
 import {Label} from "@shared/ui/components/ui/label";
@@ -75,7 +75,7 @@ const VariantRow = ({ variant, onStockUpdate }: {
 )}
 
 const createProductColumns = (
-  onSortChange: (field: keyof ProductListItem) => void,
+  onSortChange: (field: keyof ProductWithVariantsAndCategories) => void,
   expandedRows: Set<string>,
   toggleRow: (productId: string) => void,
   onVariantStockUpdate: (variantId: string, newStock: number) => void
@@ -152,7 +152,6 @@ const createProductColumns = (
     header: () => (
       <Button
         variant="ghost"
-        onClick={() => onSortChange('totalStock')}
         className="h-auto p-0 font-medium hover:bg-transparent"
       >
         Total Stock
@@ -180,7 +179,6 @@ const createProductColumns = (
     header: () => (
       <Button
         variant="ghost"
-        onClick={() => onSortChange('totalStock')}
         className="h-auto p-0 font-medium hover:bg-transparent"
       >
         Price

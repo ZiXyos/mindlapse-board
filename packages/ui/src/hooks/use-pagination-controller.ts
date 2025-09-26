@@ -3,7 +3,7 @@ import { useTablePaginationStore } from '../stores/pagination.store'
 
 export function usePaginationController() {
   const store = useTablePaginationStore()
-  
+
   const updateFromSharedResponse = React.useCallback((response: any) => {
     const { data, meta } = response
     if (meta?.total !== store.total) {
@@ -13,7 +13,7 @@ export function usePaginationController() {
       store.setPageIndex(meta.currentPage - 1)
     }
   }, [store.setTotal, store.setPageIndex, store.total, store.pageIndex])
-  
+
   const pagination = React.useMemo(() => ({
     pageIndex: store.pageIndex,
     pageSize: store.pageSize,
@@ -41,12 +41,18 @@ export function usePaginationController() {
     store.nextPage,
     store.previousPage,
   ])
-  
-  const queryParams = React.useMemo(() => store.getQueryParams(), [
-    store.pageIndex,
-    store.pageSize
-  ])
-  
+
+  const queryParams = React.useMemo(() => {
+    const params = store.getQueryParams()
+    console.log('usePaginationController queryParams updated:', params, {
+      pageIndex: store.pageIndex,
+      pageSize: store.pageSize,
+      total: store.total,
+      totalPages: store.totalPages
+    })
+    return params
+  }, [store])
+
   return {
     pagination,
     queryParams,

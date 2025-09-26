@@ -17,9 +17,13 @@ export interface PaginationQuery {
 
 export interface PaginatedResponse<T> {
   data: T[]
-  meta: PaginationMeta & {
-    page: number
-    limit: number
+  meta: {
+    currentPage: number
+    perPage: number
+    total: number
+    lastPage: number
+    hasNext: boolean
+    hasPrev: boolean
   }
 }
 
